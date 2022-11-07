@@ -9,6 +9,8 @@
                     <tr>
                         <th>#</th>
                         <th>Nombre pregunta</th>
+                        <th>Pregunta única</th>
+                        <th>Cantidad respuestas</th>
                         <th>Fecha creación</th>
                         <th>Fecha actualización</th>
                         <th>Fecha anulación</th>

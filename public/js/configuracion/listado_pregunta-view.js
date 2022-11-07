@@ -1,7 +1,10 @@
 class ListadoPreguntaView {
 
-    constructor(model) {
+    constructor(model,preguntaRespuesta) {
         this.model = model;
+        this.preguntaRespuesta = preguntaRespuesta;
+        this.preguntaRespuesta.eventos();
+
     }
 
     listar = () => {
@@ -17,10 +20,14 @@ class ListadoPreguntaView {
             ],
             buttons: [
                 { extend: 'excel', text: 'Excel' },
-                { extend: 'pdf', text: 'PDF' },
+                { extend: 'pdf', text: 'PDF',title: 'Lista de Preguntas',  orientation: 'portrait' ,pageSize: 'LEGAL',      exportOptions: {
+                    columns: [ 0, 1, 2,3,4,5,6]
+                }  },
                 {
                     text: '<i class="fas fa-plus"></i> Agregar',
                     action: ()=> {
+                        // $('#tablaPregunta    ').dataTable().clear();
+                        this.limpiarTabla('tablaRespuesta');
                         this.limpiarModalEditarPregunta();
                         this.actualizarEstadoInputSwitchModalPregunta(true);
                         $("#modalEditarAgregarPregunta").modal("show");
@@ -69,6 +76,10 @@ class ListadoPreguntaView {
                     }, orderable: true, searchable: false, className: 'text-center'
                 },
                 { data: 'nombre', className: 'text-left' },
+                { data: 'respuesta_unica', className: 'text-left' },
+                { data: 'cantidad_respuestas', className: 'text-center',render:function(data, type, row){
+                    return `<span class="badge text-bg-light">${row.cantidad_respuestas}</span>`;
+                } },
                 { data: 'created_at', className: 'text-center' },
                 { data: 'updated_at', className: 'text-center' },
                 { data: 'deleted_at', orderable: false, searchable: false, className: 'text-center' },
@@ -155,15 +166,7 @@ class ListadoPreguntaView {
             });
         });
 
-        $("#modalEditarAgregarPregunta").on("click", "button.editar-respuesta", (e) => {
-            $("#modalEditarAgregarRespuesta").modal("show");
-            this.obtenerRespuesta(e.currentTarget.dataset.id);
-            $("#btnGuardarPregunta").attr("data-evento", "editar");
-            $("#btnGuardarPregunta").prop("disabled", false);
-            $("#btnGuardarRespuesta").html("Editar");
-            $("#titulo_modal_respuesta").html("Editar");
-
-        });
+ 
 
     }
 
@@ -172,13 +175,6 @@ class ListadoPreguntaView {
             document.querySelector("div[id='modalEditarAgregarPregunta'] label[name='texto_estado']").textContent = "Habilitado";
         } else if (estado == false) {
             document.querySelector("div[id='modalEditarAgregarPregunta'] label[name='texto_estado']").textContent = "Anulado";
-        }
-    }
-    actualizarEstadoInputSwitchModalRespuesta(estado) {
-        if (estado == true) {
-            document.querySelector("div[id='modalEditarAgregarRespuesta'] label[name='texto_estado']").textContent = "Habilitado";
-        } else if (estado == false) {
-            document.querySelector("div[id='modalEditarAgregarRespuesta'] label[name='texto_estado']").textContent = "Anulado";
         }
     }
 
@@ -190,10 +186,17 @@ class ListadoPreguntaView {
             if (respuesta.status == "info") {
                 document.querySelector("div[id='modalEditarAgregarPregunta'] input[name='id']").value = respuesta.data.id;
                 document.querySelector("div[id='modalEditarAgregarPregunta'] input[name='nombre']").value = respuesta.data.nombre;
+                document.querySelector("div[id='modalEditarAgregarPregunta'] input[name='respuesta_unica']").value = respuesta.data.respuesta_unica;
+
                 document.querySelector("div[id='modalEditarAgregarPregunta'] input[name='estado']").checked = respuesta.data.deleted_at != null ? false : true;
                 this.actualizarEstadoInputSwitchModalPregunta(respuesta.data.deleted_at != null ? false : true);
                 // this.llenarTablaRespuesta(respuesta.data.respuesta);
-                this.llenarTablaRespuesta(respuesta.data.id);
+                // this.llenarTablaRespuesta(respuesta.data.id);
+                // const listadoPreguntaRespuestaView = new ListadoPreguntaRespuestaView(new ListadoPreguntaModel(csrf_token));
+                // listadoPreguntaRespuestaView.llenarTablaRespuesta(respuesta.data.id);
+                // listadoPreguntaRespuestaView.eventos();
+
+                this.preguntaRespuesta.llenarTablaRespuesta(respuesta.data.id);
 
 
             }
@@ -201,94 +204,25 @@ class ListadoPreguntaView {
             Util.mensaje("error", "Hubo un problema. Por favor vuelva a intentarlo");
         }).always(() => {
             // $("#btnGuardarPregunta").html($mensaje);
-        });
-    }
-    obtenerRespuesta(id) {
-        this.limpiarModalEditarRespuesta();
-        this.model.obtenerRespuestas(id).then((respuesta) => {
-            console.log(respuesta);
-            // Util.mensaje(respuesta.status, respuesta.mensaje);
-            if (respuesta.status == "info") {
-                document.querySelector("div[id='modalEditarAgregarRespuesta'] input[name='id']").value = respuesta.data.id;
-                document.querySelector("div[id='modalEditarAgregarRespuesta'] input[name='pregunta_id']").value = respuesta.data.pregunta_id;
-
-                document.querySelector("div[id='modalEditarAgregarRespuesta'] input[name='nombre']").value = respuesta.data.nombre;
-                document.querySelector("div[id='modalEditarAgregarRespuesta'] input[name='estado']").checked = respuesta.data.deleted_at != null ? false : true;
-                this.actualizarEstadoInputSwitchModalRespuesta(respuesta.data.deleted_at != null ? false : true);
-                // this.llenarTablaRespuesta(respuesta.data.respuesta);
-            }
-        }).fail(() => {
-            Util.mensaje("error", "Hubo un problema. Por favor vuelva a intentarlo");
-        }).always(() => {
-            // $("#btnGuardarPregunta").html($mensaje);
-        });
-    }
-
-    llenarTablaRespuesta(id){
-        console.log(id);
-        const $tablaRespuesta = $('#tablaRespuesta').DataTable({
-            dom: "<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            lengthChange: false,
-    
-            buttons: [],
-            pageLength: 5,
-            language: idioma,
-            order: [0, 'asc'],
-            destroy: true,
-            serverSide: true,
-            info: false,
-            // data:data,
-            buttons:[
-                {
-                    text: '<i class="fas fa-plus"></i> Agregar',
-                    action: ()=> {
-                        this.limpiarModalEditarRespuesta();
-                        $("#modalEditarAgregarRespuesta").modal("show");
-                        $("#btnGuardarRespuesta").attr("data-evento", "registrar");
-                        $("#btnGuardarRespuesta").html("Registrar");
-                        $("#titulo_modal_respuesta").html("Registrar");
-
-                    
-                    },
-                    className: 'btn btn-sm btn-success nuevo',
-                },
-            ],
-            
-            ajax: {
-                url: route('configuracion.pregunta.respuesta.listar'),
-                method: 'POST',
-                data:{id},
-                headers: { 'X-CSRF-TOKEN': csrf_token }
-            },
-            columns: [
-                {
-                    data: 'id', render: function (data, type, row, index) {
-                        return index.row + 1;
-                    }, orderable: true, searchable: false, className: 'text-center'
-                },
-                { data: 'nombre', className: 'text-left' },
-                // {  render: (data, type, row)=>{
-                //     return '<div class="btn-group" role="group"><button type="button" class="btn btn-xs btn-warning editar-respuesta" data-id="'+row.id+'" ><i class="fa-solid fa-pencil"></i></button>';
-                // }
-                // },
-                { data: 'accion', orderable: false, searchable: false, className: 'text-center' }
-
-            ],
-            "autoWidth": false
-
         });
     }
 
     limpiarModalEditarPregunta() {
         document.getElementById('formModalEditarAgregarPregunta').reset();
+        document.querySelector("div[id='modalEditarAgregarPregunta'] input[name='id']").value='';
         this.actualizarEstadoInputSwitchModalPregunta(false);
 
     }
-    limpiarModalEditarRespuesta() {
-        document.getElementById('formModalEditarAgregarRespuesta').reset();
-        this.actualizarEstadoInputSwitchModalRespuesta(false);
 
+
+    limpiarTabla(idElement){
+        let nodeTbody = document.querySelector("table[id='" + idElement + "'] tbody");
+        if(nodeTbody!=null){
+            while (nodeTbody.children.length > 0) {
+                nodeTbody.removeChild(nodeTbody.lastChild);
+            }
+
+        }
     }
+
 }

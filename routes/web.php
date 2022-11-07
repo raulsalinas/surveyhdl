@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\ConfiguracionEncuestaController;
+use App\Http\Controllers\ConfiguracionMuestraController;
+use App\Http\Controllers\ConfiguracionMuestreoController;
 use App\Http\Controllers\ConfiguracionPreguntaController;
 use App\Http\Controllers\ConfiguracionRespuestaController;
 use App\Http\Controllers\ConfiguracionUsuarioController;
@@ -74,6 +76,34 @@ Route::middleware(['auth'])->group(function () {
             });
 
         });
+
+        Route::name('muestreo.')->prefix('muestreo')->group(function () {
+            Route::post('listar', [ConfiguracionMuestreoController::class, 'listar'])->name('listar');
+            Route::get('obtener_muestreo/{id}', [ConfiguracionMuestreoController::class, 'obtenerMuestreo'])->name('obtener_muestreo');
+            Route::post('obtener_fechas', [ConfiguracionMuestreoController::class, 'obtenerFechas'])->name('obtener_fechas');
+            Route::get('obtener_fecha/{id}', [ConfiguracionMuestreoController::class, 'obtenerFecha'])->name('obtener_fecha');
+            Route::post('guardar_fecha', [ConfiguracionMuestreoController::class, 'guardarFecha'])->name('guardar_fecha');
+
+        });
+        Route::name('muestra.')->prefix('muestra')->group(function () {
+            Route::post('listar', [ConfiguracionMuestraController::class, 'listar'])->name('listar');
+            Route::get('obtener/{id}', [ConfiguracionMuestraController::class, 'obtener'])->name('obtener');
+            Route::post('guardar', [ConfiguracionMuestraController::class, 'guardar'])->name('guardar');
+
+        });
+
+        Route::name('usuario.')->prefix('usuario')->group(function () {
+            Route::post('listar', [ConfiguracionUsuarioController::class, 'listar'])->name('listar');
+            Route::get('obtener/{id}', [ConfiguracionUsuarioController::class, 'obtener'])->name('obtener');
+            Route::post('guardar', [ConfiguracionUsuarioController::class, 'guardar'])->name('guardar');
+            Route::get('obtener_acceso/{id}', [ConfiguracionUsuarioController::class, 'obtenerAcceso'])->name('obtener_acceso');
+            Route::get('obtener_acceso_prueba', [ConfiguracionUsuarioController::class, 'actualizarAccesoPrueba'])->name('obtener_acceso_prueba');
+            Route::post('actualizar_acceso', [ConfiguracionUsuarioController::class, 'actualizarAcceso'])->name('actualizar_acceso');
+
+        });
+
+
+
         Route::name('usuario.')->prefix('usuario')->group(function () {
             Route::get('index', [ConfiguracionUsuarioController::class, 'index'])->name('index');
             Route::post('listar', [ConfiguracionUsuarioController::class, 'listar'])->name('listar');

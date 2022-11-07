@@ -22,13 +22,20 @@
                     <br>
                     <div class="row">
                         <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="respuesta_unica" class="form-label">Respuesta única</label>
+                                <input type="text" class="form-control" name="respuesta_unica" placeholder="">
+                            </div>
+
                             <label for="nombre" class="form-label">Respuestas</label>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered table-condensed table-hover" id="tablaRespuesta" width="100%">
                                     <thead class="table-primary">
                                         <tr>
                                             <th>#</th>
-                                            <th width="60%">Respuesta</th>
+                                            <th width="50%">Respuesta</th>
+                                            <th>Fecha anulación</th>
                                             <th>Acción</th>
                                         </tr>
                                     </thead>

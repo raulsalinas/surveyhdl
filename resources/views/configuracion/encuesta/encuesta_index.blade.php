@@ -1,5 +1,5 @@
 @section('cabecera')
-Gestión  de encuestas
+Gestión  de Encuestas
 @endsection
 
 @extends('layouts.app')
@@ -12,23 +12,18 @@ Gestión  de encuestas
             <button class="nav-link active" id="encuesta-tab" data-bs-toggle="tab" data-bs-target="#encuesta-tab-pane" type="button" role="tab" aria-controls="encuesta-tab" aria-selected="true">Encuesta</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pregunta-tab" data-bs-toggle="tab" data-bs-target="#pregunta-tab-pane" -pane type="button" role="tab" aria-controls="pregunta-tab" aria-selected="false">Pregunta</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="respuesta-tab" data-bs-toggle="tab" data-bs-target="#respuesta-tab-pane" type="button" role="tab" aria-controls="respuesta-tab" aria-selected="false">Respuesta</button>
-        </li>
-
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="fecha-tab" data-bs-toggle="tab" data-bs-target="#fecha-tab-pane" t-paneype="button" role="tab" aria-controls="fecha-tab" aria-selected="false">Fecha</button>
-        </li>
-
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="muestra-tab" data-bs-toggle="tab" data-bs-target="#muestra-tab-pane" -pane type="button" role="tab" aria-controls="muestra-tab" aria-selected="false">Muestra</button>
+            <button class="nav-link" id="pregunta-tab" data-bs-toggle="tab" data-bs-target="#pregunta-tab-pane" -pane type="button" role="tab" aria-controls="pregunta-tab" aria-selected="false">Pregunta & Respuesta</button>
         </li>
 
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="muestreo-tab" data-bs-toggle="tab" data-bs-target="#muestreo-tab-pane" -pane type="button" role="tab" aria-controls="muestra-tab" aria-selected="false">Muestreo</button>
         </li>
+        
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="muestra-tab" data-bs-toggle="tab" data-bs-target="#muestra-tab-pane" -pane type="button" role="tab" aria-controls="muestra-tab" aria-selected="false">Muestra</button>
+        </li>
+
+
 
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -39,21 +34,14 @@ Gestión  de encuestas
         <div class="tab-pane fade" id="pregunta-tab-pane" role="tabpanel" aria-labelledby="pregunta-tab" tabindex="0">
             @include("configuracion/encuesta/pregunta_tab")
         </div>
-        <div class="tab-pane fade" id="respuesta-tab-pane" role="tabpanel" aria-labelledby="respuesta-tab" tabindex="0">
-            @include("configuracion/encuesta/respuesta_tab")
+        
+        <div class="tab-pane fade" id="muestreo-tab-pane" role="tabpanel" aria-labelledby="muestreo-tab" tabindex="0">
+            @include("configuracion/encuesta/muestreo_tab")
         </div>
-
-        <div class="tab-pane fade" id="fecha-tab-pane" role="tabpanel" aria-labelledby="fecha-tab" tabindex="0">
-            @include("configuracion/encuesta/fecha_tab")
-        </div>
-
         <div class="tab-pane fade" id="muestra-tab-pane" role="tabpanel" aria-labelledby="muestra-tab" tabindex="0">
             @include("configuracion/encuesta/muestra_tab")
         </div>
 
-        <div class="tab-pane fade" id="muestreo-tab-pane" role="tabpanel" aria-labelledby="muestreo-tab" tabindex="0">
-            @include("configuracion/encuesta/muestreo_tab")
-        </div>
     </div>
 </div>
 
@@ -67,17 +55,31 @@ Gestión  de encuestas
 <script src="{{ asset('js/configuracion/listado_encuesta-model.js?v=1') }}"></script>
 
 <script src="{{ asset('js/configuracion/listado_pregunta-view.js?v=1') }}"></script>
+<script src="{{ asset('js/configuracion/listado_pregunta_respuesta-view.js?v=1') }}"></script>
 <script src="{{ asset('js/configuracion/listado_pregunta-model.js?v=1') }}"></script>
 
+<script src="{{ asset('js/configuracion/listado_muestreo-view.js?v=1') }}"></script>
+<script src="{{ asset('js/configuracion/listado_muestreo-model.js?v=1') }}"></script>
+
+<script src="{{ asset('js/configuracion/listado_muestra-view.js?v=1') }}"></script>
+<script src="{{ asset('js/configuracion/listado_muestra-model.js?v=1') }}"></script>
 <script>
     $(document).ready(function() {
         const listadoEncuestaView = new ListadoEncuestaView(new ListadoEncuestaModel(csrf_token));
         listadoEncuestaView.listar(null);
         listadoEncuestaView.eventos();
 
-        const listadoPreguntaView = new ListadoPreguntaView(new ListadoPreguntaModel(csrf_token));
+        const listadoPreguntaView = new ListadoPreguntaView(new ListadoPreguntaModel(csrf_token),new ListadoPreguntaRespuestaView(new ListadoPreguntaModel(csrf_token)));
         listadoPreguntaView.listar(null);
         listadoPreguntaView.eventos();
+
+        const listadoMuestreoView = new ListadoMuestreoView(new ListadoMuestreoModel(csrf_token));
+        listadoMuestreoView.listar(null);
+        listadoMuestreoView.eventos();
+
+        const listadoMuestraView = new ListadoMuestraView(new ListadoMuestraModel(csrf_token));
+        listadoMuestraView.listar(null);
+        listadoMuestraView.eventos();
     });
 </script>
 

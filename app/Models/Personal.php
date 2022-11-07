@@ -10,7 +10,18 @@ class Personal extends Model
 {
     use HasFactory,SoftDeletes;
     protected $table = 'public.personal';
+    protected $fillable = ['nombres','apellido_paterno','apellido_materno','nro_documento','tipo_id','usuario_id'];
+
     // protected $primaryKey = 'id';
     // public $incrementing = false;
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+
+    public function usuario()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'usuario_id');
+    }
+    public function tipo()
+    {
+        return $this->hasOne('App\Models\Tipo', 'id', 'tipo_id');
+    }
 }

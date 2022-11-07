@@ -17,7 +17,9 @@ class ListadoEncuestaView {
             ],
             buttons: [
                 { extend: 'excel', text: 'Excel' },
-                { extend: 'pdf', text: 'PDF' },
+                { extend: 'pdf', text: 'PDF',title: 'Lista de Encuestas',  orientation: 'portrait' ,pageSize: 'LEGAL',      exportOptions: {
+                    columns: [ 0, 1, 2,3,4]
+                } },
                 // {extend:'print', text:'Imprimir'},
                 {
                     text: '<i class="fas fa-plus"></i> Agregar',
@@ -219,6 +221,7 @@ class ListadoEncuestaView {
 
     limpiarModalEditarEncuesta() {
         document.getElementById('formModalEditarAgregarEncuesta').reset();
+        document.querySelector("div[id='modalEditarAgregarEncuesta'] input[name='id']").value='';
         this.actualizarEstadoInputSwitch(false);
 
     }

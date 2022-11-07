@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fecha;
+use App\Models\Personal;
 use Illuminate\Http\Request;
 
 class ConfiguracionController extends Controller
@@ -13,6 +15,15 @@ class ConfiguracionController extends Controller
 
     public function encuesta_index(Request $request)
     {
+        $fechaList = $this->fechaList();
+        $personalList = $this->personalList();
         return view('configuracion.encuesta.encuesta_index', get_defined_vars());
+    }
+
+    public function fechaList(){
+        return Fecha::withTrashed()->get();
+    }
+    public function personalList(){
+        return Personal::withTrashed()->with('usuario')->get();
     }
 }
