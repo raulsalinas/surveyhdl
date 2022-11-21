@@ -13,5 +13,8 @@ class Respuesta extends Model
     protected $table = 'public.respuesta';
     protected $fillable = ['nombre'];
 
-
+    public function pregunta()
+    {
+        return $this->hasOne('App\Models\Pregunta', 'id', 'pregunta_id');
+    }
 }

@@ -23,7 +23,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('dashboard.index') }}" class="">Dashboard</a></li>
                 @endif
                 @if(Auth::user()->tieneAcceso(3))
-                <li class="nav-item"><a class="nav-link" href="{{ route('dashboard.index') }}" class="">Encuestas</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('encuestas.index') }}" class="">Encuestas</a></li>
                 @endif
                 @if(Auth::user()->tieneAcceso(4))
                 <li class="nav-item"><a class="nav-link" href="{{ route('dashboard.index') }}" class="">Reportes</a></li>

@@ -8,6 +8,7 @@ use App\Http\Controllers\ConfiguracionPreguntaController;
 use App\Http\Controllers\ConfiguracionRespuestaController;
 use App\Http\Controllers\ConfiguracionUsuarioController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EncuestasController;
 use App\Http\Controllers\PrincipalController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -53,6 +54,13 @@ Route::middleware(['auth'])->group(function () {
     Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::get('index', [DashboardController::class, 'index'])->name('index');
     });
+
+    Route::name('encuestas.')->prefix('encuestas')->group(function () {
+        Route::get('index', [EncuestasController::class, 'index'])->name('index');
+        Route::get('menu-encuesta', [EncuestasController::class, 'menuEncuestaList'])->name('menu-encuesta');
+
+    });
+
 
     Route::name('configuracion.')->prefix('configuracion')->group(function () {
         Route::get('index', [ConfiguracionController::class, 'configuracion_index'])->name('index');
