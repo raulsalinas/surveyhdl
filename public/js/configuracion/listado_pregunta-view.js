@@ -78,7 +78,7 @@ class ListadoPreguntaView {
                 { data: 'nombre', className: 'text-left' },
                 { data: 'respuesta_unica', className: 'text-left' },
                 { data: 'cantidad_respuestas', className: 'text-center',render:function(data, type, row){
-                    return `<span class="badge text-bg-light">${row.cantidad_respuestas}</span>`;
+                    return `<span class="badge text-bg-light handleVistaRapidaRespuestas" data-id-pregunta="${row.id}" style="cursor:pointer;">${row.cantidad_respuestas}</span>`;
                 } },
                 { data: 'created_at', className: 'text-center' },
                 { data: 'updated_at', className: 'text-center' },
@@ -108,6 +108,49 @@ class ListadoPreguntaView {
 
         $("#modalEditarAgregarPregunta").on("click", "input.handleSwitchEstadoPregunta", (e) => {
             this.actualizarEstadoInputSwitchModalPregunta(e.currentTarget.checked);
+        });
+
+        $("#tablaPregunta").on("click", "span.handleVistaRapidaRespuestas", (e) => {
+            $("#modalVistaRapidaRespuestas").modal("show");
+            document.querySelector("div[id='modalVistaRapidaRespuestas'] input[name='id']").value=e.currentTarget.dataset.idPregunta;
+            this.limpiarModalEditarPregunta();
+            this.model.obtenerListaRespuestas(e.currentTarget.dataset.idPregunta).then((respuesta) => {
+                if (respuesta.status == "info") {
+                    console.log(respuesta);
+                    let html='';
+                    (respuesta.data).forEach((element,index) => {
+                        html += `<tr>
+                        <td>${index+1}</td>
+                        <td>${element.nombre}</td>
+                        </tr>`;
+                    });
+        
+                    document.querySelector("table[id='tablaRespuestas'] tbody").insertAdjacentHTML('beforeend', html)
+        
+                }
+            }).fail(() => {
+                Util.mensaje("error", "Hubo un problema. Por favor vuelva a intentarlo");
+            }).always(() => {
+                // $("#btnGuardarPregunta").html($mensaje);
+            });
+        });
+
+        $("#modalVistaRapidaRespuestas").on("click", "button.handleClicAplicarParaTodasLasPreguntas", (e) => {
+
+            let idPregunta= document.querySelector("form[id='formModalVistaRapidaRespuestas'] input[name='id']").value;
+            this.model.AplicarRespuestasParaTodasLasPreguntas(idPregunta).then((respuesta) => {
+                if (respuesta.status == "info") {
+                    console.log(respuesta);
+                    $("#modalVistaRapidaRespuestas").modal("hide");
+                    $('#tablaPregunta').DataTable().ajax.reload(null, false);
+
+                }
+            }).fail(() => {
+                Util.mensaje("error", "Hubo un problema. Por favor vuelva a intentarlo");
+            }).always(() => {
+                // $("#btnGuardarPregunta").html($mensaje);
+            });
+
         });
 
 

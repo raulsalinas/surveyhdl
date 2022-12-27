@@ -24,4 +24,8 @@ class Personal extends Model
     {
         return $this->hasOne('App\Models\Tipo', 'id', 'tipo_id');
     }
+    public function muestra_pregunta_respuesta()
+    {
+        return $this->hasMany('App\Models\MuestraPreguntaRespuesta', 'personal_id', 'id');
+    }
 }

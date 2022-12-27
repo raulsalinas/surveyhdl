@@ -27,7 +27,7 @@
     <div id="app">
         @include('layouts.navigation')
 
-        <main class="py-4">
+        <main class="p-4">
             @yield('content')
         </main>
     </div>
@@ -42,6 +42,7 @@
         <script src="{{ asset('js/event.js') }}"></script>
 
         <script>
+            var auth_user = <?= $auth_user ?>;
             let csrf_token = '{{ csrf_token() }}';
             const idioma = {
                 "sProcessing":     "Procesando...",

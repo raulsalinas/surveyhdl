@@ -1,24 +1,18 @@
-class ListadoEncuestaMenuModel {
+class ResumenUsuarioModel {
 
     constructor(token) {
         this.token = token;
     }
 
-    obtenerEncuestas = (id) => {
-        return $.ajax({
-            url: route("configuracion.encuesta.obtener", {id: id}),
-            type: "GET",
-            dataType: "JSON",
-            data: { _token: this.token },
-        });
-    }
-
-    getMenuEncuestaList (idMuestreoByURL,idEncuestaByURL) {
+    obtenerInformacionDeResumen () {
         return new Promise(function (resolve, reject) {
             $.ajax({
-                type: 'GET',
-                url: `menu-encuesta/${idMuestreoByURL}/${idEncuestaByURL}`,
+                type: 'POST',
+                url: 'obtener-informacion-de-resumen',
                 datatype: "JSON",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function (response) {
                     resolve(response)
                 },

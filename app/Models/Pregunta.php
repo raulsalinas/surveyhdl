@@ -35,8 +35,12 @@ class Pregunta extends Model
 
     }
 
-    public function respuesta()
+    public function respuestas()
     {
         return $this->hasMany('App\Models\Respuesta', 'pregunta_id', 'id');
+    }
+    public function encuesta()
+    {
+        return $this->hasOne('App\Models\Encuesta', 'id', 'encuesta_id');
     }
 }

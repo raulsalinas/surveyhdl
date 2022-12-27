@@ -49,15 +49,33 @@ Route::middleware(['auth'])->group(function () {
 
     Route::name('principal.')->prefix('principal')->group(function () {
         Route::get('index', [PrincipalController::class, 'index'])->name('index');
+        Route::post('obtener-informacion-de-resumen', [PrincipalController::class, 'obtenerInformacionDeResumen'])->name('obtener-informacion-de-resumen');
+
     });
 
     Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::get('index', [DashboardController::class, 'index'])->name('index');
+        Route::get('obtener-cifras-totales', [DashboardController::class, 'obtenerCifrasTotales'])->name('obtener-cifras-totales');
+        Route::post('listar-informacion-usuarios', [DashboardController::class, 'listarInformacionUsuarios'])->name('listar-informacion-usuarios');
+        Route::get('obtener-usuarios-activos-y-bajas', [DashboardController::class, 'obtenerUsuariosActivosYBajas'])->name('obtener-usuarios-activos-y-bajas');
+        Route::post('obtener-avance-de-usuarios', [DashboardController::class, 'AvanceDeUsuariosView'])->name('obtener-avance-de-usuarios');
+        Route::get('obtener-preguntas/{idEncuesta?}', [DashboardController::class, 'obtenerPreguntas'])->name('obtener-preguntas');
+        Route::get('obtener-resultado-por-pregunta/{idPregunta?}', [DashboardController::class, 'obtenerResultadoPorPreguntas'])->name('obtener-resultado-por-pregunta');
     });
 
     Route::name('encuestas.')->prefix('encuestas')->group(function () {
-        Route::get('index', [EncuestasController::class, 'index'])->name('index');
-        Route::get('menu-encuesta', [EncuestasController::class, 'menuEncuestaList'])->name('menu-encuesta');
+        Route::name('muestreo.')->prefix('muestreo')->group(function () {
+            Route::get('index', [EncuestasController::class, 'muestreoIndex'])->name('index');
+            Route::get('menu-muestreo', [EncuestasController::class, 'menuMuestreoList'])->name('menu-muestreo');
+        });
+        Route::name('encuesta.')->prefix('encuesta')->group(function () {
+            Route::get('index', [EncuestasController::class, 'encuestaIndex'])->name('index');
+            Route::get('menu-encuesta/{idMuestreo}/{idEncuesta}', [EncuestasController::class, 'menuEncuestaList'])->name('menu-encuesta');
+            Route::get('llenar-encuesta', [EncuestasController::class, 'llenarEncuesta'])->name('llenar-encuesta');
+            Route::get('obtener-preguntas-de-encuesta/{idEncuesta}', [EncuestasController::class, 'obtenerPreguntasDeEncuesta'])->name('obtener-preguntas-de-encuesta');
+            Route::get('obtener-informacion-de-avance/{idEncuesta}', [EncuestasController::class, 'obtenerInformacionDeAvance'])->name('obtener-informacion-de-avance');
+            Route::post('guardar-respuesta', [EncuestasController::class, 'guardarRespuesta'])->name('guardar-respuesta');
+        });
 
     });
 
@@ -79,6 +97,8 @@ Route::middleware(['auth'])->group(function () {
             Route::name('respuesta.')->prefix('respuesta')->group(function () {
                 Route::post('listar', [ConfiguracionRespuestaController::class, 'listar'])->name('listar');
                 Route::get('obtener/{id}', [ConfiguracionRespuestaController::class, 'obtener'])->name('obtener');
+                Route::get('obtener-lista-respuestas/{id}', [ConfiguracionRespuestaController::class, 'obtenerListaRespuestas'])->name('obtener-lista-respuestas');
+                Route::get('aplicar-respuestas-para-todas-las-preguntas/{id}', [ConfiguracionRespuestaController::class, 'aplicarRespuestasParaTodasLasPreguntas'])->name('aplicar-respuestas-para-todas-las-preguntas');
                 Route::post('guardar', [ConfiguracionRespuestaController::class, 'guardar'])->name('guardar');
 
             });

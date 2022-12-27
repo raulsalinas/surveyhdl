@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pregunta;
 use App\Models\Respuesta;
 use Carbon\Carbon;
 use Exception;
@@ -53,6 +54,71 @@ class ConfiguracionRespuestaController extends Controller
     }
         return response()->json(array('data' => $data, 'status' => $status, 'mensaje' => $mensaje, 'error' => $error), 200);
 
+    }
+
+    public function obtenerListaRespuestas($id){
+        try {
+        $error = "";
+        $data= Respuesta::where('pregunta_id',$id)->get();
+        if(empty($data)==false){
+            $status = 'info';
+            $mensaje = 'Se encontro resultados';
+        }else{
+            $status = 'warning';
+            $mensaje = 'No se encontro el registro';
+        }
+    } catch (Exception $ex) {
+        $data = [];
+        $status = 'error';
+        $mensaje = 'Hubo un problema al intentar buscar el registro. Por favor intente de nuevo';
+        $error = $ex;
+    }
+        return response()->json(array('data' => $data, 'status' => $status, 'mensaje' => $mensaje, 'error' => $error), 200);
+
+    }
+
+    public function aplicarRespuestasParaTodasLasPreguntas($id){
+        try {
+            $error = "";
+            $data=[];
+            // para aplicar
+            $respuestasPreguntaDeReferencia= Respuesta::where('pregunta_id',$id)->orderBy('id')->get();
+            // $dimensionRespuestaDeReferencia = $respuestasPreguntaDeReferencia->count();
+            $existentesRespuestas= Respuesta::where('pregunta_id','!=',$id)->orderBy('id')->get();
+            $preguntasParaAplicar= Pregunta::where('id','!=',$id)->orderBy('id')->get();
+
+            foreach ($existentesRespuestas as $keyEr => $er) {
+                
+                 Respuesta::where('id',$er->id)->first()->delete();
+                 
+
+            }
+
+            foreach ($preguntasParaAplicar as $keyPpa => $ppa) {
+                foreach ($respuestasPreguntaDeReferencia as $keyRpdr => $rpdr) {
+                        $data= new Respuesta();
+                        $data->pregunta_id =$ppa->id;
+                        $data->nombre = $rpdr->nombre;
+                        $data->save();
+                }
+            }
+
+
+            if(empty($data)==false){
+                $status = 'info';
+                $mensaje = 'Se guardo las respuestas';
+            }else{
+                $status = 'warning';
+                $mensaje = 'Hubo un problema al intentar guardar';
+            }
+        } catch (Exception $ex) {
+            $data = [];
+            $status = 'error';
+            $mensaje = 'Hubo un problema al intentar guardar los registros. Por favor intente de nuevo';
+            $error = $ex;
+        }
+            return response()->json(array('data' => $data, 'status' => $status, 'mensaje' => $mensaje, 'error' => $error), 200);
+    
     }
 
     public function guardar(Request $request)

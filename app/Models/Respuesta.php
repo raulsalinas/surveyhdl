@@ -17,4 +17,8 @@ class Respuesta extends Model
     {
         return $this->hasOne('App\Models\Pregunta', 'id', 'pregunta_id');
     }
+    public function muestraPreguntaRespuesta()
+    {
+        return $this->hasOne('App\Models\MuestraPreguntaRespuesta', 'respuesta_id', 'id');
+    }
 }

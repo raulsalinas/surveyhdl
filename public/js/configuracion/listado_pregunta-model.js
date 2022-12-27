@@ -20,6 +20,22 @@ class ListadoPreguntaModel {
             data: { _token: this.token },
         });
     }
+    obtenerListaRespuestas = (id) => {
+        return $.ajax({
+            url: route("configuracion.pregunta.respuesta.obtener-lista-respuestas", {id: id}),
+            type: "GET",
+            dataType: "JSON",
+            data: { _token: this.token },
+        });
+    }
+    AplicarRespuestasParaTodasLasPreguntas = (id) => {
+        return $.ajax({
+            url: route("configuracion.pregunta.respuesta.aplicar-respuestas-para-todas-las-preguntas", {id: id}),
+            type: "GET",
+            dataType: "JSON",
+            data: { _token: this.token },
+        });
+    }
 
     registrarPregunta = (data, route) => {
         return $.ajax({

@@ -5,8 +5,11 @@ Encuestas
 @extends('layouts.app')
 
 @section('content')
-<div class="row justify-content-md-left p-4" id="contenedorEncuestas">
+  
+<div class="row justify-content-md-left">
+    <h4>Resumen</h4>
 </div>
+<div class="row justify-content-md-left" id="contenedorEncuestas"></div>
 @endsection
 
 @section('scripts')

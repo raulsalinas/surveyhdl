@@ -1,23 +1,14 @@
-class ListadoEncuestaMenuModel {
+class ListadoMuestreoMenuModel {
 
     constructor(token) {
         this.token = token;
     }
 
-    obtenerEncuestas = (id) => {
-        return $.ajax({
-            url: route("configuracion.encuesta.obtener", {id: id}),
-            type: "GET",
-            dataType: "JSON",
-            data: { _token: this.token },
-        });
-    }
-
-    getMenuEncuestaList (idMuestreoByURL,idEncuestaByURL) {
+    getMenuMuestreoList () {
         return new Promise(function (resolve, reject) {
             $.ajax({
                 type: 'GET',
-                url: `menu-encuesta/${idMuestreoByURL}/${idEncuestaByURL}`,
+                url: 'menu-muestreo',
                 datatype: "JSON",
                 success: function (response) {
                     resolve(response)

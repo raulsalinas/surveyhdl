@@ -27,3 +27,4 @@
 
 @include('configuracion.encuesta.modal_editar_agregar_pregunta')
 @include('configuracion.encuesta.modal_editar_agregar_respuesta')
+@include('configuracion.encuesta.modal_vista_rapida_respuestas')

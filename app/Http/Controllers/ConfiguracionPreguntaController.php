@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pregunta;
+use App\Models\Respuesta;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class ConfiguracionPreguntaController extends Controller
     public function obtener($id){
         try {
         $error = "";
-        $data= Pregunta::with(['respuesta'  => function ($q) {
+        $data= Pregunta::with(['respuestas'  => function ($q) {
             $q->where([['respuesta.deleted_at', '=', null]]);
           }
     ])->withTrashed()->find($id);

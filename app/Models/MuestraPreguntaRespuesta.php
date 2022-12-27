@@ -19,4 +19,8 @@ class MuestraPreguntaRespuesta extends Model
     {
         return $this->hasOne('App\Models\Respuesta', 'id', 'respuesta_id');
     }
+    public function muestreo()
+    {
+        return $this->hasOne('App\Models\Muestreo', 'id', 'muestreo_id');
+    }
 }

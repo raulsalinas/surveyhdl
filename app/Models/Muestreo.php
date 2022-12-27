@@ -35,4 +35,8 @@ class Muestreo extends Model
     {
         return $this->hasMany('App\Models\Fecha', 'muestreo_id', 'id');
     }
+    public function encuestas()
+    {
+        return $this->hasMany('App\Models\Encuesta', 'id', 'encuesta_id');
+    }
 }
