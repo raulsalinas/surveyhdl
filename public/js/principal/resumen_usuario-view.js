@@ -16,8 +16,8 @@ class ResumenUsuarioView {
             document.querySelector("span[id='totalIngresosAlSistema']").textContent=data.cantidad_inicios_sesion;
             document.querySelector("span[id='TotalDePreguntasContestadas']").textContent=data.cantidad_preguntas_contestadas;
             (data.encuestas).forEach(encuesta => {
-                cardEncuesta +=`<div class="col-md-6">
-                <div class="card" style="width: 18rem;">
+                cardEncuesta +=`<div class="col-md-6 p-4" >
+                <div class="card" style="width: auto">
                     <img src="/images/principal/${encuesta.pregunta!=null && encuesta.pregunta.length>0?'ready.svg':'no_data.svg'}" style="height: 90px;" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">${encuesta.nombre}</h5>
