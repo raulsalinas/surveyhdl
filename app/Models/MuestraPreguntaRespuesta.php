@@ -15,6 +15,10 @@ class MuestraPreguntaRespuesta extends Model
 
 
 
+    public function personal()
+    {
+        return $this->hasOne('App\Models\Personal', 'id', 'personal_id');
+    }
     public function respuesta()
     {
         return $this->hasOne('App\Models\Respuesta', 'id', 'respuesta_id');

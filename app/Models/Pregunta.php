@@ -17,7 +17,7 @@ class Pregunta extends Model
 
 
 
-
+ 
 
     public function getCantidadRespuestasAttribute()
     {

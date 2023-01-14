@@ -31,7 +31,7 @@ class EncuestasController extends Controller
     }
 
     public function menuMuestreoList(){
-        $muestreos = Muestreo::with('encuesta')->get();
+        $muestreos = Muestreo::with('encuestas')->get();
         return $muestreos;
     }
 
@@ -51,7 +51,7 @@ class EncuestasController extends Controller
 
     public function obtenerPreguntasDeEncuesta($idEncuesta){
         $preguntas = Pregunta::with(['encuesta','respuestas.muestraPreguntaRespuesta'=>function ($q) {
-            $q->where('muestra_pregunta_respuesta.personal_id', '=', Auth::user()->id);
+            $q->where('muestra_pregunta_respuesta.personal_id', '=', Auth::user()->personal->id);
         }]) 
         ->where("encuesta_id",$idEncuesta)->orderBy('id','asc')->get();
         return $preguntas;

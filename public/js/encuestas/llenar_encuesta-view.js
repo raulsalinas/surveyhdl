@@ -45,10 +45,14 @@ class LlenarEncuestaView {
             let cantidadTotalDePreguntas= parseInt(data[0]['total_preguntas'])??0;
             let cantidadPreguntasPorContestar= parseInt(data[0]['cantidad_preguntas_por_completar'])??0;
             let cantidadPreguntasContestadas= parseInt(data[0]['cantidad_preguntas_completadas'])??0;
-            let porcentajePreguntasContestadas= '%'+ (cantidadPreguntasContestadas*100/cantidadTotalDePreguntas).toFixed(2);
-            document.querySelector("span[id='porcentajeAvance']").innerHTML= porcentajePreguntasContestadas ;
+            let porcentajePreguntasContestadas= (cantidadPreguntasContestadas*100/cantidadTotalDePreguntas).toFixed(2);
+            document.querySelector("span[id='porcentajeAvance']").innerHTML= '%'+porcentajePreguntasContestadas ;
             document.querySelector("span[id='cantidadPreguntasSinContestar']").innerHTML= cantidadPreguntasPorContestar;
             document.querySelector("span[id='cantidadPreguntasContestadas']").innerHTML= cantidadPreguntasContestadas;
+
+            if(porcentajePreguntasContestadas==100){
+                Util.mensaje('success', 'Encuesta completada, Gracias por participar');
+            }
         });
     }
 
@@ -130,11 +134,7 @@ class LlenarEncuestaView {
                             that.mostrarInformacionDeAvance();
 
                         } else {
-                            Swal.fire(
-                                'Error en el servidor',
-                                response.mensaje,
-                                response.estado
-                            );
+                            Util.mensaje(response.estado, response.mensaje);
                         }
 
                         }).catch(function (err) {

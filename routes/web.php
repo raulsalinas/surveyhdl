@@ -10,6 +10,7 @@ use App\Http\Controllers\ConfiguracionUsuarioController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EncuestasController;
 use App\Http\Controllers\PrincipalController;
+use App\Http\Controllers\ReportesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -76,6 +77,14 @@ Route::middleware(['auth'])->group(function () {
             Route::get('obtener-informacion-de-avance/{idEncuesta}', [EncuestasController::class, 'obtenerInformacionDeAvance'])->name('obtener-informacion-de-avance');
             Route::post('guardar-respuesta', [EncuestasController::class, 'guardarRespuesta'])->name('guardar-respuesta');
         });
+
+    });
+    Route::name('reportes.')->prefix('reportes')->group(function () {
+        Route::get('index', [ReportesController::class, 'ReportesIndex'])->name('index');
+        Route::post('listar-informacion-de-usuario', [ReportesController::class, 'listarInformacionDeUsuario'])->name('listar-informacion-de-usuario');
+        Route::post('listar-avance-de-usuario', [ReportesController::class, 'listarAvanceDeUsuario'])->name('listar-avance-de-usuario');
+        Route::post('listar-preguntas-por-encuesta', [ReportesController::class, 'listarPreguntasPorEncuesta'])->name('listar-preguntas-por-encuesta');
+        Route::post('listar-resultados-por-encuesta', [ReportesController::class, 'listarResultadosPorEncuesta'])->name('listar-resultados-por-encuesta');
 
     });
 

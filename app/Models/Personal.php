@@ -20,6 +20,10 @@ class Personal extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'usuario_id');
     }
+    public function muestra()
+    {
+        return $this->hasOne('App\Models\Muestra', 'personal_id','id');
+    }
     public function tipo()
     {
         return $this->hasOne('App\Models\Tipo', 'id', 'tipo_id');
