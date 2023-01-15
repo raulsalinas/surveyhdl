@@ -29,6 +29,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('artisan', function () {
+    Artisan::call('clear-compiled');
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+});
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

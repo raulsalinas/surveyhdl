@@ -9,12 +9,12 @@
     <title>HDL</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="//cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link href="{{ asset('css/GalleryOnGrids.css') }}" rel="stylesheet">
 
 </head>
@@ -50,16 +50,16 @@
             </div>
             <div class="col-4">
                 <div class="wrapper">
-                    <img src="https://fitls.com/wp-content/uploads/2019/08/satisfaccion-laboral-beneficios.jpg" alt="">
-                    <img src="https://www.sesamehr.mx/wp-content/uploads/2021/07/como-medir-la-satisfaccion-laboral.jpg" alt="">
-                    <img src="https://cuidatusaludcondiane.com/wp-content/uploads/2011/11/empleado-feliz.jpg" alt="">
-                    <img src="https://www.techtitute.com/techtitute/cursos/011221538/recursos/banner/liderazgo-gestion-servicios-enfermeria-portada.jpg" alt="">
-                    <img src="https://www.unir.net/wp-content/uploads/sites/22/2021/07/shutterstock_400845949.jpg" alt="">
-                    <img src="https://newmedicalleaders.com/wp-content/uploads/2020/09/40-new-medical-leaders.jpg" alt="">
-                    <img src="https://www.feminiza.com/imagenes/contenidos/1/4/4/8/1448.jpg" alt="">
-                    <img src="https://static.theceomagazine.net/wp-content/uploads/2018/10/23145603/2018.09.27_CEO-Magazine-byline_Happiness-at-work-%E2%80%93-is-it-natural-or-necessary_subbed-700x467.jpg" alt="">
-                    <img src="https://www.hubgets.com/blog/wp-content/uploads/happiness_at_work.png" alt="">
-                    <img src="https://as2.ftcdn.net/v2/jpg/03/35/82/27/1000_F_335822779_FdvdknOoWPF3oSJfUs18VAPBQyuiO98U.jpg" alt="">
+                    <img src="//fitls.com/wp-content/uploads/2019/08/satisfaccion-laboral-beneficios.jpg" alt="">
+                    <img src="//www.sesamehr.mx/wp-content/uploads/2021/07/como-medir-la-satisfaccion-laboral.jpg" alt="">
+                    <img src="//cuidatusaludcondiane.com/wp-content/uploads/2011/11/empleado-feliz.jpg" alt="">
+                    <img src="//www.techtitute.com/techtitute/cursos/011221538/recursos/banner/liderazgo-gestion-servicios-enfermeria-portada.jpg" alt="">
+                    <img src="//www.unir.net/wp-content/uploads/sites/22/2021/07/shutterstock_400845949.jpg" alt="">
+                    <img src="//newmedicalleaders.com/wp-content/uploads/2020/09/40-new-medical-leaders.jpg" alt="">
+                    <img src="//www.feminiza.com/imagenes/contenidos/1/4/4/8/1448.jpg" alt="">
+                    <img src="//static.theceomagazine.net/wp-content/uploads/2018/10/23145603/2018.09.27_CEO-Magazine-byline_Happiness-at-work-%E2%80%93-is-it-natural-or-necessary_subbed-700x467.jpg" alt="">
+                    <img src="//www.hubgets.com/blog/wp-content/uploads/happiness_at_work.png" alt="">
+                    <img src="//as2.ftcdn.net/v2/jpg/03/35/82/27/1000_F_335822779_FdvdknOoWPF3oSJfUs18VAPBQyuiO98U.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
         </div>
 
         <footer class="pt-3 mt-4 text-muted border-top">
-            &copy; 2023
+            &copy; 2023 v1.0.0
         </footer>
     </div>
 </body>

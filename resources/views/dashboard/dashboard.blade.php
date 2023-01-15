@@ -161,7 +161,7 @@ Dashboard
 </div>
 @endsection
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 
 <script src="{{ asset('js/dashboard/dashboard-view.js?v=1') }}"></script>
 <script src="{{ asset('js/dashboard/dashboard-model.js?v=1') }}"></script>

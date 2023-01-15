@@ -15,7 +15,7 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.2.0-web/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lobibox/dist/css/lobibox.css') }}">
