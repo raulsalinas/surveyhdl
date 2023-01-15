@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Encuesta;
 use App\Models\Fecha;
 use App\Models\Personal;
 use Illuminate\Http\Request;
@@ -17,6 +18,8 @@ class ConfiguracionController extends Controller
     {
         $fechaList = $this->fechaList();
         $personalList = $this->personalList();
+        $encuestas= Encuesta::all();
+
         return view('configuracion.encuesta.encuesta_index', get_defined_vars());
     }
 

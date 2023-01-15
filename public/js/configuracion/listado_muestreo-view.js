@@ -132,7 +132,7 @@ class ListadoMuestreoView {
         $("#modalEditarAgregarMuestreo").on("click", "button.handleClickGuardarCambios", (e) => {
             let formData = new FormData($('#formModalEditarAgregarMuestreo')[0]);
 
-            const $route = route("configuracion.pregunta.guardar");
+            const $route = route("configuracion.muestreo.guardar");
             let $mensaje = ($(e.currentTarget).data("evento") == "registrar") ? "Registrar" : "Editar";
             let $btnNombre = ($(e.currentTarget).data("evento") == "registrar") ? "Registrando" : "Editando";
 
@@ -241,6 +241,7 @@ class ListadoMuestreoView {
             pageLength: 5,
             language: idioma,
             serverSide: true,
+            destroy: true,
             initComplete: function (settings, json) {
                 const $filter = $('#tablaFechas_filter');
                 const $input = $filter.find('input');

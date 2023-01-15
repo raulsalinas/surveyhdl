@@ -109,17 +109,18 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('obtener-lista-respuestas/{id}', [ConfiguracionRespuestaController::class, 'obtenerListaRespuestas'])->name('obtener-lista-respuestas');
                 Route::get('aplicar-respuestas-para-todas-las-preguntas/{id}', [ConfiguracionRespuestaController::class, 'aplicarRespuestasParaTodasLasPreguntas'])->name('aplicar-respuestas-para-todas-las-preguntas');
                 Route::post('guardar', [ConfiguracionRespuestaController::class, 'guardar'])->name('guardar');
-
+                
             });
-
+            
         });
-
+        
         Route::name('muestreo.')->prefix('muestreo')->group(function () {
             Route::post('listar', [ConfiguracionMuestreoController::class, 'listar'])->name('listar');
             Route::get('obtener_muestreo/{id}', [ConfiguracionMuestreoController::class, 'obtenerMuestreo'])->name('obtener_muestreo');
             Route::post('obtener_fechas', [ConfiguracionMuestreoController::class, 'obtenerFechas'])->name('obtener_fechas');
             Route::get('obtener_fecha/{id}', [ConfiguracionMuestreoController::class, 'obtenerFecha'])->name('obtener_fecha');
             Route::post('guardar_fecha', [ConfiguracionMuestreoController::class, 'guardarFecha'])->name('guardar_fecha');
+            Route::post('guardar', [ConfiguracionMuestreoController::class, 'guardar'])->name('guardar');
 
         });
         Route::name('muestra.')->prefix('muestra')->group(function () {

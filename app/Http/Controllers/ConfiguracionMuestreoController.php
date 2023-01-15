@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Fecha;
 use App\Models\Muestreo;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -97,5 +98,58 @@ class ConfiguracionMuestreoController extends Controller
     }
         return response()->json(array('data' => $data, 'status' => $status, 'mensaje' => $mensaje, 'error' => $error), 200);
 
+    }
+
+    public function guardar(Request $request)
+    {
+
+        // try {
+            // $validator = Validator::make($request->all(), ['documento' => 'unique:pgsql.public.pregunta']);
+
+            // if ($validator->fails()) {
+            //     $respuesta = 'duplicado';
+            //     $alerta = 'warning';
+            //     $mensaje = 'Duplicado, Se encontró un registro con el mismo contenido';
+            //     $error = "";
+            // } else {
+                $muestreo = Muestreo::withTrashed()->firstOrNew(['id' => intval($request->id)]);
+                    $muestreo->nombre = $request->nombre;
+                    $muestreo->encuesta_id = $request->encuesta_id;
+                    if($request->estado>0 || empty($request->estado)!=false){
+                        $muestreo->deleted_at = Carbon::now();
+                    }else{
+                        $muestreo->deleted_at = null;
+                    }
+                $muestreo->save();
+
+                $muestreoTieneFechaInicioFin = Fecha::where('muestreo_id',$muestreo->id)->get();
+
+                if(count($muestreoTieneFechaInicioFin) ==0){
+                    $fecha= new Fecha();
+                    $fecha->fecha_inicio = $request->fecha_inicio;
+                    $fecha->fecha_fin = $request->fecha_fin;
+                    $fecha->muestreo_id = $muestreo->id;
+                    $fecha->save();
+
+                }
+
+    
+                $respuesta = 'ok';
+                $alerta = 'success';
+                if ($request->id > 0) {
+                    $mensaje = 'Se ha editado un muestreo';
+                } else {
+                    $mensaje = 'Se ha registrado un muestreo';
+                }
+                $error = '';
+            // }
+            
+        // } catch (Exception $ex) {
+        //     $respuesta = 'error';
+        //     $alerta = 'error';
+        //     $mensaje = 'Hubo un problema al registrar. Por favor intente de nuevo';
+        //     $error = $ex;
+        // }
+        return response()->json(array('respuesta' => $respuesta, 'alerta' => $alerta, 'mensaje' => $mensaje, 'error' => $error), 200);
     }
 }
