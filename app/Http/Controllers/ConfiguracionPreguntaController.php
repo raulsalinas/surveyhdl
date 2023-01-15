@@ -75,6 +75,7 @@ class ConfiguracionPreguntaController extends Controller
                 $data = Pregunta::withTrashed()->firstOrNew(['id' => intval($request->id)]);
                     $data->nombre = $request->nombre;
                     $data->respuesta_unica = $request->respuesta_unica??null;
+                    $data->encuesta_id = $request->encuesta_id;
                     if($request->estado>0 || empty($request->estado)!=false){
                         $data->deleted_at = Carbon::now();
                     }else{

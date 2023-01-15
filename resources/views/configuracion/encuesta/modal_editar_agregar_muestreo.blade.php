@@ -15,7 +15,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Encuesta por encuesta</label>
+                        <label class="form-label">Encuesta</label>
                         <select class="form-control handleChangeEncuesta" name="encuesta_id" id="encuesta_id">
                             <option value="">Seleccione una opción</option>
                             @foreach ($encuestas as $encuesta)

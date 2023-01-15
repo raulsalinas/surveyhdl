@@ -13,7 +13,16 @@
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" class="form-control" name="nombre" placeholder="">
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Encuesta</label>
+                        <select class="form-control handleChangeEncuesta" name="encuesta_id" id="encuesta_id">
+                            <option value="">Seleccione una opción</option>
+                            @foreach ($encuestas as $encuesta)
+                            <option value="{{$encuesta->id}}">De {{$encuesta->nombre}}</option>
 
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-check form-switch">
                         <input class="form-check-input handleSwitchEstadoPregunta" type="checkbox" role="switch" name="estado" checked>
                         <label class="form-check-label" for="estado" name="texto_estado">Habilitado</label>

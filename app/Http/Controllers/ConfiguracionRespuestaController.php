@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Encuesta;
 use App\Models\Pregunta;
 use App\Models\Respuesta;
 use Carbon\Carbon;
@@ -82,15 +83,14 @@ class ConfiguracionRespuestaController extends Controller
             $error = "";
             $data=[];
             // para aplicar
+            $encuesta_id = Pregunta::where('id',$id)->first()->encuesta_id;
             $respuestasPreguntaDeReferencia= Respuesta::where('pregunta_id',$id)->orderBy('id')->get();
-            // $dimensionRespuestaDeReferencia = $respuestasPreguntaDeReferencia->count();
             $existentesRespuestas= Respuesta::where('pregunta_id','!=',$id)->orderBy('id')->get();
-            $preguntasParaAplicar= Pregunta::where('id','!=',$id)->orderBy('id')->get();
+            $preguntasParaAplicar= Pregunta::where([['id','!=',$id],['encuesta_id',$encuesta_id]])->orderBy('id')->get();
 
             foreach ($existentesRespuestas as $keyEr => $er) {
                 
-                 Respuesta::where('id',$er->id)->first()->delete();
-                 
+                Respuesta::where('id',$er->id)->first()->delete();
 
             }
 
