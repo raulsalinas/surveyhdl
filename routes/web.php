@@ -13,6 +13,7 @@ use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\ReportesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------

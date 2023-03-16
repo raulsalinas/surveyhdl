@@ -89,7 +89,7 @@ class ConfiguracionUsuarioController extends Controller
                     $dataUser->password = Hash::make($request->contraseña);
                 }
 
-                if ($request->estado > 0 || empty($request->estado) != false) {
+                if (!isset($request->estado)) {
                     $dataUser->deleted_at = Carbon::now();
                 } else {
                     $dataUser->deleted_at = null;
@@ -103,11 +103,6 @@ class ConfiguracionUsuarioController extends Controller
                 $dataPersonal->nro_documento = $request->nro_documento;
                 $dataPersonal->tipo_id = $request->tipo_id;
                 $dataPersonal->usuario_id = $dataUser->id;
-                if ($request->estado > 0 || empty($request->estado) != false) {
-                    $dataPersonal->deleted_at = Carbon::now();
-                } else {
-                    $dataPersonal->deleted_at = null;
-                }
                 $dataPersonal->save();
 
                 $respuesta = 'ok';
