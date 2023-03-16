@@ -75,14 +75,38 @@ class ConfiguracionUsuarioController extends Controller
     public function guardar(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), ['email' => 'unique:pgsql.public.users']);
+            $continuar=false;
+            $respuesta = '';
+            $alerta = '';
+            $mensaje = $request->id;
+            $error = '';
 
-            if ($validator->fails()) {
-                $respuesta = 'duplicado';
-                $alerta = 'warning';
-                $mensaje = 'El email ingresado ya se encuentra registrado';
-                $error = "";
-            } else {
+            
+            if(intval($request->id) > 0){
+                $usuario= User::withTrashed()->find($request->id);
+                if($usuario->email == $request->email){
+                    // no validar, el correo es el mismo del usuario
+                    $continuar= true;
+                }else{
+                    $validator = Validator::make($request->all(), ['email' => 'unique:pgsql.public.users']);
+                    // validar 
+                    if ($validator->fails()) {
+                        $respuesta = 'duplicado';
+                        $alerta = 'warning';
+                        $mensaje = 'El email ingresado ya se encuentra registrado';
+                        $error = "";
+                        return response()->json(array('respuesta' => $respuesta, 'alerta' => $alerta, 'mensaje' => $mensaje, 'error' => $error), 200);
+
+                    } else {
+                        $continuar= true;
+                    }
+                }
+            }else{ // es nuevo
+                $continuar=true;
+            }
+
+            if ($continuar==true) {
+            
                 $dataUser = User::withTrashed()->firstOrNew(['id' => intval($request->id)]);
                 $dataUser->email = $request->email;
                 if (isset($request->contraseña) == true && trim($request->contraseña) != '') {
