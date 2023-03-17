@@ -136,9 +136,9 @@ class ConfiguracionRespuestaController extends Controller
                 $data = Respuesta::withTrashed()->firstOrNew(['id' => intval($request->id)]);
                     $data->nombre = $request->nombre;
                     $data->pregunta_id = $request->pregunta_id;
-                    if($request->estado>0 || empty($request->estado)!=false){
+                    if (!isset($request->estado)) {
                         $data->deleted_at = Carbon::now();
-                    }else{
+                    } else {
                         $data->deleted_at = null;
                     }
                 $data->save();

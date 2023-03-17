@@ -76,9 +76,9 @@ class ConfiguracionPreguntaController extends Controller
                     $data->nombre = $request->nombre;
                     $data->respuesta_unica = $request->respuesta_unica??null;
                     $data->encuesta_id = $request->encuesta_id;
-                    if($request->estado>0 || empty($request->estado)!=false){
+                    if (!isset($request->estado)) {
                         $data->deleted_at = Carbon::now();
-                    }else{
+                    } else {
                         $data->deleted_at = null;
                     }
                 $data->save();

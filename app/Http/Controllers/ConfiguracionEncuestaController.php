@@ -70,9 +70,9 @@ class ConfiguracionEncuestaController extends Controller
             // } else {
                 $data = Encuesta::withTrashed()->firstOrNew(['id' => intval($request->id)]);
                     $data->nombre = $request->nombre;
-                    if($request->estado>0 || empty($request->estado)!=false){
+                    if (!isset($request->estado)) {
                         $data->deleted_at = Carbon::now();
-                    }else{
+                    } else {
                         $data->deleted_at = null;
                     }
                 $data->save();

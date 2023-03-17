@@ -70,9 +70,9 @@ class ConfiguracionMuestraController extends Controller
                     $data->nombre = $request->nombre;
                     $data->fecha_id = $request->fecha_id;
                     $data->personal_id = $request->personal_id;
-                    if($request->estado>0 || empty($request->estado)!=false){
+                    if (!isset($request->estado)) {
                         $data->deleted_at = Carbon::now();
-                    }else{
+                    } else {
                         $data->deleted_at = null;
                     }
                 $data->save();
