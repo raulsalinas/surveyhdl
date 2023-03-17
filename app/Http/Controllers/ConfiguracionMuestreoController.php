@@ -115,11 +115,12 @@ class ConfiguracionMuestreoController extends Controller
                 $muestreo = Muestreo::withTrashed()->firstOrNew(['id' => intval($request->id)]);
                     $muestreo->nombre = $request->nombre;
                     $muestreo->encuesta_id = $request->encuesta_id;
-                    if($request->estado>0 || empty($request->estado)!=false){
+                    if (!isset($request->estado)) {
                         $muestreo->deleted_at = Carbon::now();
-                    }else{
+                    } else {
                         $muestreo->deleted_at = null;
                     }
+
                 $muestreo->save();
 
                 $muestreoTieneFechaInicioFin = Fecha::where('muestreo_id',$muestreo->id)->get();
