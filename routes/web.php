@@ -71,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('obtener-usuarios-activos-y-bajas', [DashboardController::class, 'obtenerUsuariosActivosYBajas'])->name('obtener-usuarios-activos-y-bajas');
         Route::post('obtener-avance-de-usuarios', [DashboardController::class, 'AvanceDeUsuariosView'])->name('obtener-avance-de-usuarios');
         Route::get('obtener-preguntas/{idEncuesta?}', [DashboardController::class, 'obtenerPreguntas'])->name('obtener-preguntas');
-        Route::get('obtener-resultado-por-pregunta/{idPregunta?}', [DashboardController::class, 'obtenerResultadoPorPreguntas'])->name('obtener-resultado-por-pregunta');
+        Route::get('obtener-resultado-por-usuario/{idEncuesta?}/{idUsuario?}', [DashboardController::class, 'obtenerResultadoPorUsuario'])->name('obtener-resultado-por-usuario');
     });
 
     Route::name('encuestas.')->prefix('encuestas')->group(function () {

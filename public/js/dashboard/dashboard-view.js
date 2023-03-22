@@ -8,7 +8,7 @@ class DashboardView {
     obtenerCifrasTotales = () => {
 
         this.model.obtenerCifrasTotales().then((data) => {
-            console.log(data);
+            // console.log(data);
             document.querySelector("span[id='totalUsuariosActivos']").textContent = data.cantidad_usuarios;
             document.querySelector("span[id='totalEncuestasActivas']").textContent = data.cantidad_encuestas;
             document.querySelector("span[id='totalMuestrasActivas']").textContent = data.cantidad_muestra;
@@ -18,7 +18,7 @@ class DashboardView {
 
     obtenerCantidadUsuariosActivosYBajas = () => {
         this.model.obtenerCantidadUsuariosActivosYBajas().then((data) => {
-            console.log(data);
+            // console.log(data);
             document.querySelector("span[id='CantidadUsuariosActivos']").textContent = data.cantidad_usuarios_activos;
             document.querySelector("span[id='CantidadUsuariosDeBaja']").textContent = data.cantidad_usuarios_de_baja;
 
@@ -108,35 +108,36 @@ class DashboardView {
         });
     }
 
-    llenarSelectPregunta = (idEncuesta) => {
-        var select = document.getElementById('id_pregunta');
-            select.innerHTML='';
-        this.model.obtenerPreguntaList(idEncuesta).then((data) => {
-            if(data.length>0){
-                // var select = document.getElementById('id_pregunta');
-                for (var i = 0; i < data.length; i++) {
-                    var opt = document.createElement('option');
-                    opt.value = data[i]['id'];
-                    opt.innerHTML = data[i]['nombre'];
-                    select.appendChild(opt);
-                }
-                this.InicializarListarResultadosPorPregunta();
-            }
-        });
+    // llenarSelectPregunta = (idEncuesta) => {
+    //     var select = document.getElementById('id_pregunta');
+    //         select.innerHTML='';
+    //     this.model.obtenerPreguntaList(idEncuesta).then((data) => {
+    //         if(data.length>0){
+    //             // var select = document.getElementById('id_pregunta');
+    //             for (var i = 0; i < data.length; i++) {
+    //                 var opt = document.createElement('option');
+    //                 opt.value = data[i]['id'];
+    //                 opt.innerHTML = data[i]['nombre'];
+    //                 select.appendChild(opt);
+    //             }
+    //             this.InicializarListarResultadosPorPregunta();
+    //         }
+    //     });
 
-    }
+    // }
 
-    InicializarListarResultadosPorPregunta = () => {
-        let idPregunta = document.querySelector("select[id='id_pregunta']").value;
-        this.model.obtenerResultadosPorPregnta(idPregunta).then((data) => {
-            console.log(data);
-            this.contruirTablaResultadosPorPregunta(data);
-        });
+    // InicializarListarResultadosPorPregunta = () => {
+    //     let idPregunta = document.querySelector("select[id='id_pregunta']").value;
+    //     this.model.obtenerResultadosPorUsuario(idPregunta).then((data) => {
+    //         // console.log(data);
+    //         this.contruirTablaResultadosPorPregunta(data);
+    //     });
 
-    }
+    // }
 
 
     contruirTablaResultadosPorPregunta(data) {
+        console.log(data);
         if('data' in data && 'etiqueta' in data){
 
             // Obtener una referencia al elemento canvas del DOM
@@ -177,7 +178,27 @@ class DashboardView {
     eventos = () => {
 
         $(document).on("change", "select.handleChangeEncuesta", (e) => {            
-            this.llenarSelectPregunta(e.currentTarget.value);
+        
+            
+        });
+
+
+        $(document).on("change", "select.handleChangeUsuario", (e) => {            
+            // let idUsuario = (e.currentTarget.value);
+            let idEncuesta = document.querySelector("select[id='id_encuesta']").value;
+            if(idUsuario>0){
+                if(idEncuesta >0){
+                    this.model.obtenerResultadosPorUsuario(idEncuesta,idUsuario).then((data) => {
+                        console.log(data);
+                        this.contruirTablaResultadosPorPregunta(data);
+                    });
+                }else{
+                    Util.mensaje('info', 'Debe seleccionar una encuesta');
+                }
+            }else{
+                Util.mensaje('info', 'Debe seleccionar un usuario');
+            }
+            
         });
     }
 

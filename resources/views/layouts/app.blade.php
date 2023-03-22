@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.2.0-web/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/lobibox/dist/css/lobibox.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/Select2/css/select2.min.css') }}">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -73,7 +74,11 @@
         </script>
         <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script> -->
         <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
+        <script>
+                    $('.select2').select2();
 
+        </script>
         @routes
         @yield("scripts")
 

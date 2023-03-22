@@ -6,6 +6,8 @@ use App\Models\AvanceDeUsuariosView;
 use App\Models\Encuesta;
 use App\Models\Muestra;
 use App\Models\MuestraPreguntaRespuesta;
+use App\Models\Muestreo;
+use App\Models\Personal;
 use App\Models\Pregunta;
 use App\Models\Respuesta;
 use App\Models\User;
@@ -18,6 +20,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $encuestas = Encuesta::all();
+        $usuarios = User::with("personal")->get();
         return view('dashboard.dashboard', get_defined_vars());
     }
     public function obtenerCifrasTotales()
@@ -64,30 +67,35 @@ class DashboardController extends Controller
         ->make(true);
     }
 
-    public function obtenerResultadoPorPreguntas($idPregunta)
+    public function obtenerResultadoPorUsuario($idEncuesta,$idUsuario)
     {
-        $respuestaList= Respuesta::where('pregunta_id',$idPregunta)->get();
-        $idRespuestaList=[];
-        $nombreRespuestaList=[];
-        $respuesta=[];
-        foreach ($respuestaList as $key => $value) {
-            $idRespuestaList[] = $value->id;
-            $nombreRespuestaList[] = $value->nombre;
-        }
-        
-        $muestraPreguntaRespuestaList = MuestraPreguntaRespuesta::whereIn('respuesta_id',$idRespuestaList)->get();
 
-        foreach ($idRespuestaList as $key => $respuestaId) {
-            $i=0;
+        $personal = Personal::where('usuario_id',$idUsuario)->first();
+
+        $etiquetaList=['Satisfacción Alta', 'Satisfacción Media', 'Satisfacción Baja'];
+        $sumaDeRespuestas=0;
+        $data=[0,0,0];
+ 
+        $muestreo = Muestreo::where('encuesta_id',$idEncuesta)->first();
+
+        $muestraPreguntaRespuestaList = MuestraPreguntaRespuesta::with("respuesta")->where([['personal_id',$personal->id],['muestreo_id',$muestreo->id]])->get();
         foreach ($muestraPreguntaRespuestaList as $key => $pr) {
-            if(intval($respuestaId) == intval($pr->respuesta_id)){
-                $i++;
-            }
+            $sumaDeRespuestas+= intval($pr->respuesta->nombre);
         }
-        $respuesta[] = $i;
-        }
+        // Satisfacción laboral Alta:     141 – 180
+        // Satisfacción laboral Media:    115 - 140 
+        // Satisfacción laboral Baja:     36 - 114
+        if($sumaDeRespuestas>=141){
+            $data=[$sumaDeRespuestas,0,0];
+        }else if($sumaDeRespuestas >= 115 && $sumaDeRespuestas <= 140){
+            $data=[0,$sumaDeRespuestas,0];
 
-        return response()->json(['etiqueta'=>$nombreRespuestaList,'data'=>$respuesta]);
+        }else if($sumaDeRespuestas <= 114){
+            $data=[0,0,$sumaDeRespuestas];
+        }
+ 
+
+        return response()->json(['etiqueta'=>$etiquetaList,'data'=>$data]);
     }
 
 }

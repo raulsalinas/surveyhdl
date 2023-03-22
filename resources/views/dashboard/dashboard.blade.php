@@ -122,22 +122,27 @@ Dashboard
 
             <div class="card shadow-sm bg-body rounded">
                 <div class="card-body">
-                    <h6 class="card-title text-center link-secondary"><strong>Resultados por Pregunta</strong></h6>
+                    <h6 class="card-title text-center link-secondary"><strong>Resultados por Usuario</strong></h6>
 
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Encuesta</label>
                                 <select class="form-control handleChangeEncuesta" id="id_encuesta">
+                                    <option value="">Seleccionar una opción</option>
                                     @foreach ($encuestas as $encuesta)
                                     <option value="{{$encuesta->id}}">{{$encuesta->nombre}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Pregunta</label>
-
-                                <select class="form-control" id="id_pregunta">
+                                <label>Usuario</label>
+                                <select class="form-control handleChangeUsuario select2" id="id_usuario">
+                                    <option value="">Seleccionar una opción</option>
+                                    @foreach ($usuarios as $usuario)
+                                    <option value="{{$usuario->id}}">{{$usuario->personal->nombres}} {{$usuario->personal->apellido_paterno}} {{$usuario->personal->apellido_materno}}</option>
+                                    @endforeach
+                                </select>
                                 </select>
                             </div>
                         </div>
@@ -175,7 +180,7 @@ Dashboard
         dashboardView.obtenerCantidadUsuariosActivosYBajas();
         dashboardView.listarInformacionPorUsuarios();
         dashboardView.obtenerAvanceDeUsuarios();
-        dashboardView.llenarSelectPregunta(document.querySelector("select[id='id_encuesta']").value);
+        // dashboardView.llenarSelectPregunta(document.querySelector("select[id='id_encuesta']").value);
         // dashboardView.actualizarlistarResultadosPorPregunta();
         dashboardView.eventos();
 

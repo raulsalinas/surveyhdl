@@ -68,11 +68,11 @@ class DashboardModel {
 
         });
     }
-    obtenerResultadosPorPregnta(id) {
+    obtenerResultadosPorUsuario(idEncuesta,idUsuario) {
         return new Promise(function (resolve, reject) {
             $.ajax({
                 type: 'GET',
-                url: 'obtener-resultado-por-pregunta/'+id,
+                url: 'obtener-resultado-por-usuario/'+idEncuesta+'/'+idUsuario,
                 datatype: "JSON",
                 success: function (response) {
                     resolve(response)
