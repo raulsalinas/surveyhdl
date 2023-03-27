@@ -46,6 +46,7 @@ Reportes
 <script src="{{ asset('js/reportes/avance_de_usuario-view.js?v=1') }}"></script>
 <script src="{{ asset('js/reportes/preguntas_por_encuesta-view.js?v=1') }}"></script>
 <script src="{{ asset('js/reportes/resultados_por_encuesta-view.js?v=1') }}"></script>
+<script src="//cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 
 <script>
     $(document).ready(function() {

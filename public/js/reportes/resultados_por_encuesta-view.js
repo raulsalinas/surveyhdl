@@ -82,7 +82,70 @@ class ResultadosPorEncuestaView {
     eventos = () => {
         $("#contenedorReportes").on("change", "select.handleChangeEncuesta", (e) => {
             this.listar(e.currentTarget.value);
+            if(e.currentTarget.value == 2){ // si es encuensta de liderazgo
+                document.querySelector("div[id='graficas_encuesta_liderazgo']").removeAttribute("hidden");
+            }else{
+                document.querySelector("div[id='graficas_encuesta_liderazgo']").setAttribute("hidden",true);
+
+            }
+            this.contruirReporteGrafico(e.currentTarget.value);
+
         });
+    }
+
+    contruirReporteGrafico(idEncuesta){
+        
+        if(idEncuesta >0){
+            this.model.obtenerReporteGrafico(idEncuesta).then((data) => {
+                console.log(data);
+                this.contruirGrafica(data.etiqueta, data.dataRecompensaContigente, 'grafica_recompensa_contingente');
+                this.contruirGrafica(data.etiqueta, data.dataDireccionPorExcepcion, 'grafica_direccion_por_excepcion');
+                this.contruirGrafica(data.etiqueta, data.dataCarisma, 'grafica_carisma');
+                this.contruirGrafica(data.etiqueta, data.dataEstimulacionIntelectual, 'grafica_estimulacion_intelectual');
+                this.contruirGrafica(data.etiqueta, data.dataInspiracion, 'grafica_inspiracion');
+                this.contruirGrafica(data.etiqueta, data.dataConsideracionIndividualizada, 'grafica_consideracion_individualizada');
+                this.contruirGrafica(data.etiqueta, data.dataAusenciaLiderazgo, 'grafica_ausencia_de_liderazgo');
+            });
+        }else{
+            Util.mensaje('info', 'Debe seleccionar una encuesta');
+        }
+    }
+
+    contruirGrafica(etiqueta,data,tabla) {
+        if(data.length > 0 && etiqueta.length>0){
+
+            // Obtener una referencia al elemento canvas del DOM
+            const $grafica = document.querySelector("#"+tabla);
+            // Las etiquetas son las que van en el eje X. 
+            const etiquetas = etiqueta
+            // Podemos tener varios conjuntos de datos. Comencemos con uno
+            const datosVentas2020 = {
+                label: "Respuestas",
+                data: data, // La data es un arreglo que debe tener la misma cantidad de valores que la cantidad de etiquetas
+                backgroundColor: 'rgba(54, 162, 235, 0.2)', // Color de fondo
+                borderColor: 'rgba(54, 162, 235, 1)', // Color del borde
+                borderWidth: 1, // Ancho del borde
+            };
+            new Chart($grafica, {
+                type: 'bar', // Tipo de gráfica
+                data: {
+                    labels: etiquetas,
+                    datasets: [
+                        datosVentas2020,
+                        // Aquí más datos...
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                    },
+                }
+            });
+        }
     }
     
 

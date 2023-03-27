@@ -95,6 +95,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('listar-avance-de-usuario', [ReportesController::class, 'listarAvanceDeUsuario'])->name('listar-avance-de-usuario');
         Route::post('listar-preguntas-por-encuesta', [ReportesController::class, 'listarPreguntasPorEncuesta'])->name('listar-preguntas-por-encuesta');
         Route::post('listar-resultados-por-encuesta', [ReportesController::class, 'listarResultadosPorEncuesta'])->name('listar-resultados-por-encuesta');
+        Route::get('obtener-reporte-grafico/{idEncuesta}', [ReportesController::class, 'obtenerReporteGrafico'])->name('obtener-reporte-grafico');
 
     });
 

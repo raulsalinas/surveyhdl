@@ -184,7 +184,7 @@ class DashboardView {
 
 
         $(document).on("change", "select.handleChangeUsuario", (e) => {            
-            // let idUsuario = (e.currentTarget.value);
+            let idUsuario = (e.currentTarget.value);
             let idEncuesta = document.querySelector("select[id='id_encuesta']").value;
             if(idUsuario>0){
                 if(idEncuesta >0){
