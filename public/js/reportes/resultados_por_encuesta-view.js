@@ -28,7 +28,7 @@ class ResultadosPorEncuestaView {
                 ],
                 pageLength: 20,
                 language: idioma,
-                serverSide: true,
+                serverSide: false,
                 initComplete: function (settings, json) {
                     const $filter = $('#tablaResultadosPorEncuesta_filter');
                     const $input = $filter.find('input');
