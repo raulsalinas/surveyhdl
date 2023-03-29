@@ -86,25 +86,35 @@ class ResultadosPorEncuestaView {
                 document.querySelector("div[id='graficas_encuesta_liderazgo']").removeAttribute("hidden");
             }else{
                 document.querySelector("div[id='graficas_encuesta_liderazgo']").setAttribute("hidden",true);
-
             }
-            this.contruirReporteGrafico(e.currentTarget.value);
+            if(e.currentTarget.value == 1){ // si es encuensta de satisfaccion
+                document.querySelector("div[id='graficas_encuesta_satisfaccion']").removeAttribute("hidden");
+            }else{
+                document.querySelector("div[id='graficas_encuesta_satisfaccion']").setAttribute("hidden",true);
+            }
+            this.contruirReporteGraficoLiderazgo(e.currentTarget.value);
 
         });
     }
 
-    contruirReporteGrafico(idEncuesta){
+    contruirReporteGraficoLiderazgo(idEncuesta){
         
         if(idEncuesta >0){
             this.model.obtenerReporteGrafico(idEncuesta).then((data) => {
                 console.log(data);
-                this.contruirGrafica(data.etiqueta, data.dataRecompensaContigente, 'grafica_recompensa_contingente');
-                this.contruirGrafica(data.etiqueta, data.dataDireccionPorExcepcion, 'grafica_direccion_por_excepcion');
-                this.contruirGrafica(data.etiqueta, data.dataCarisma, 'grafica_carisma');
-                this.contruirGrafica(data.etiqueta, data.dataEstimulacionIntelectual, 'grafica_estimulacion_intelectual');
-                this.contruirGrafica(data.etiqueta, data.dataInspiracion, 'grafica_inspiracion');
-                this.contruirGrafica(data.etiqueta, data.dataConsideracionIndividualizada, 'grafica_consideracion_individualizada');
-                this.contruirGrafica(data.etiqueta, data.dataAusenciaLiderazgo, 'grafica_ausencia_de_liderazgo');
+                if(idEncuesta == 1){ // satisfaccion
+                    this.contruirGrafica(data.etiquetaTotalEncuestados, data.dataTotalEncuestados, 'grafica_total_encuestados');
+                    document.querySelector("span[id='total_encuestados']").textContent= data.total_encuestados;
+
+                }else if(idEncuesta == 2){ //liderazgo
+                    this.contruirGrafica(data.etiqueta, data.dataRecompensaContigente, 'grafica_recompensa_contingente');
+                    this.contruirGrafica(data.etiqueta, data.dataDireccionPorExcepcion, 'grafica_direccion_por_excepcion');
+                    this.contruirGrafica(data.etiqueta, data.dataCarisma, 'grafica_carisma');
+                    this.contruirGrafica(data.etiqueta, data.dataEstimulacionIntelectual, 'grafica_estimulacion_intelectual');
+                    this.contruirGrafica(data.etiqueta, data.dataInspiracion, 'grafica_inspiracion');
+                    this.contruirGrafica(data.etiqueta, data.dataConsideracionIndividualizada, 'grafica_consideracion_individualizada');
+                    this.contruirGrafica(data.etiqueta, data.dataAusenciaLiderazgo, 'grafica_ausencia_de_liderazgo');
+                }
             });
         }else{
             Util.mensaje('info', 'Debe seleccionar una encuesta');

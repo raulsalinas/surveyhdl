@@ -84,35 +84,39 @@ class ReportesController extends Controller
 
     public function obtenerReporteGrafico($idEncuesta){
 
-        // $personal = Personal::where('usuario_id',$idUsuario)->first();
-        $grupoPreguntaRecompensaContigente=[8,10,11,12,16];
-        $grupoPreguntaDireccionPorExcepcion=[2,5,7,9,18,26];
-        $grupoPreguntaCarisma=[3,21,33,34];
-        $grupoPreguntaEstimulacionIntelectual=[4,15,23,25,28,29,30];
-        $grupoPreguntaInspiracion=[19,22,24];
-        $grupoPreguntaConsideracionIndividualizada=[13,14,17];
-        $grupoPreguntaAusenciaLiderazgo=[1,6,20,27,31,32];
 
-        $etiquetaList=['Satisfacción Alta', 'Satisfacción Media', 'Satisfacción Baja'];
+        
+        if($idEncuesta ==1){ // satisfaccion
 
-        $dataRecompensaContigente= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[8,10,11,12,16]);
-        $dataDireccionPorExcepcion= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[2,5,7,9,18,26]);
-        $dataCarisma= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[3,21,33,34]);
-        $dataEstimulacionIntelectual= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[4,15,23,25,28,29,30]);
-        $dataInspiracion= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[19,22,24]);
-        $dataConsideracionIndividualizada= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[13,14,17]);
-        $dataAusenciaLiderazgo= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[1,6,20,27,31,32]);
+            $dataTotalEncuestados= $this->obtenerDataTotalEncuestados($idEncuesta);
+
+            return response()->json([
+                'etiquetaTotalEncuestados'=>['Satisfacción Alta', 'Satisfacción Media', 'Satisfacción Baja'],'dataTotalEncuestados'=>$dataTotalEncuestados['data'],'total_encuestados'=>$dataTotalEncuestados['total_encuestados'],
+
+            ]);
+        }else if($idEncuesta ==2){ // liderazgo
+            $etiquetaList=['Satisfacción Alta', 'Satisfacción Media', 'Satisfacción Baja'];
+
+            $dataRecompensaContigente= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[8,10,11,12,16]);
+            $dataDireccionPorExcepcion= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[2,5,7,9,18,26]);
+            $dataCarisma= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[3,21,33,34]);
+            $dataEstimulacionIntelectual= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[4,15,23,25,28,29,30]);
+            $dataInspiracion= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[19,22,24]);
+            $dataConsideracionIndividualizada= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[13,14,17]);
+            $dataAusenciaLiderazgo= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[1,6,20,27,31,32]);
+
+            return response()->json(['etiqueta'=>$etiquetaList,
+            'dataRecompensaContigente'=>$dataRecompensaContigente,
+            'dataDireccionPorExcepcion'=>$dataDireccionPorExcepcion,
+            'dataCarisma'=>$dataCarisma,
+            'dataEstimulacionIntelectual'=>$dataEstimulacionIntelectual,
+            'dataInspiracion'=>$dataInspiracion,
+            'dataConsideracionIndividualizada'=>$dataConsideracionIndividualizada,
+            'dataAusenciaLiderazgo'=>$dataAusenciaLiderazgo
+            ]);
+        }
 
 
-        return response()->json(['etiqueta'=>$etiquetaList,
-        'dataRecompensaContigente'=>$dataRecompensaContigente,
-        'dataDireccionPorExcepcion'=>$dataDireccionPorExcepcion,
-        'dataCarisma'=>$dataCarisma,
-        'dataEstimulacionIntelectual'=>$dataEstimulacionIntelectual,
-        'dataInspiracion'=>$dataInspiracion,
-        'dataConsideracionIndividualizada'=>$dataConsideracionIndividualizada,
-        'dataAusenciaLiderazgo'=>$dataAusenciaLiderazgo
-        ]);
     }
 
 
@@ -159,6 +163,52 @@ class ReportesController extends Controller
         }
 
         return [$cantidadSatisfaccionAlta,$cantidadSatisfaccionMedia,$cantidadSatisfaccionBaja];
+
+    }
+
+    public function obtenerDataTotalEncuestados($idEncuesta){
+        $sumaDeRespuestas=0;
+        $cantidadSatisfaccionBaja = 0;
+        $cantidadSatisfaccionMedia = 0;
+        $cantidadSatisfaccionAlta = 0;
+
+        $idPreguntaList=[]; 
+        $idRespuestaHabilitadaList=[];
+        
+        $preguntaList = Pregunta::where('numero_pregunta','>',0)->get();
+
+        foreach ($preguntaList as $key => $pregunta) {
+            $idPreguntaList[]=$pregunta->id;
+        }
+
+        $respuestaHabilitada = Respuesta::whereIn('pregunta_id',$idPreguntaList)->get();
+        foreach ($respuestaHabilitada as $key => $value) {
+            $idRespuestaHabilitadaList[]=$value->id;
+        }
+    
+        $muestreo = Muestreo::where('encuesta_id',$idEncuesta)->first();
+
+        $usuarioList = User::with('personal')->get();
+
+        foreach ($usuarioList as $key => $usuario) {
+            if($usuario->personal !=null && $usuario->personal->id >0){
+                $muestraPreguntaRespuestaList = MuestraPreguntaRespuesta::with("respuesta")->whereIn('respuesta_id',$idRespuestaHabilitadaList)->where([['personal_id',$usuario->personal->id],['muestreo_id',$muestreo->id]])->get();
+                foreach ($muestraPreguntaRespuestaList as $key => $pr) {
+                    $sumaDeRespuestas+= intval($pr->respuesta->valor);
+                }
+
+                if($sumaDeRespuestas>=141){
+                    $cantidadSatisfaccionAlta+=$sumaDeRespuestas;
+                }else if($sumaDeRespuestas >= 115 && $sumaDeRespuestas <= 140){
+                    $cantidadSatisfaccionMedia+=$sumaDeRespuestas;
+        
+                }else if($sumaDeRespuestas <= 114){
+                    $cantidadSatisfaccionBaja+=$sumaDeRespuestas;
+                }
+            }
+        }
+
+        return ['total_encuestados'=>$usuarioList->count(),'data'=>[$cantidadSatisfaccionAlta,$cantidadSatisfaccionMedia,$cantidadSatisfaccionBaja]];
 
     }
 }

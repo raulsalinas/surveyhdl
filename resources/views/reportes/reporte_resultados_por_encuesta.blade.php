@@ -104,15 +104,21 @@
                 </div>
             </div>
 
+        </div>
 
-
-
-
-
-
-
-
-
+        <div class="row" id="graficas_encuesta_satisfaccion" hidden>
+            <div class="col-md-4">
+                <div class="card shadow-sm bg-body rounded">
+                    <div class="card-body">
+                        <h6 class="card-title text-center link-secondary"><strong>Total encuestados <span id="total_encuestados"></span></strong></h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <canvas id="grafica_total_encuestados"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <br>
