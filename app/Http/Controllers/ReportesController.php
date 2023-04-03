@@ -181,26 +181,30 @@ class ReportesController extends Controller
     
         $muestreo = Muestreo::where('encuesta_id',$idEncuesta)->first();
 
-        $usuarioList = User::with('personal')->get();
+        $usuarioList = User::with(['personal'=> function ($q) {
+            $q->where('personal.tipo_id', 2);
+        } ])->get();
 
         foreach ($usuarioList as $key => $usuario) {
-            if($usuario->personal !=null && $usuario->personal->id >0){
+            if($usuario->personal !=null && ($usuario->personal->id ==17 || $usuario->personal->id ==18)){
                 $muestraPreguntaRespuestaList = MuestraPreguntaRespuesta::with("respuesta")->whereIn('respuesta_id',$idRespuestaHabilitadaList)->where([['personal_id',$usuario->personal->id],['muestreo_id',$muestreo->id]])->get();
                 foreach ($muestraPreguntaRespuestaList as $key => $pr) {
                     $sumaDeRespuestas+= intval($pr->respuesta->valor);
                 }
 
-                if($sumaDeRespuestas>=141){
-                    $cantidadSatisfaccionAlta+=$sumaDeRespuestas;
-                }else if($sumaDeRespuestas >= 115 && $sumaDeRespuestas <= 140){
-                    $cantidadSatisfaccionMedia+=$sumaDeRespuestas;
+                if(intval($sumaDeRespuestas)>=141){
+                    $cantidadSatisfaccionAlta+=intval($sumaDeRespuestas);
+                }else if(intval($sumaDeRespuestas) >= 115 && intval($sumaDeRespuestas) <= 140){
+                    $cantidadSatisfaccionMedia+=intval($sumaDeRespuestas);
         
-                }else if($sumaDeRespuestas <= 114){
-                    $cantidadSatisfaccionBaja+=$sumaDeRespuestas;
+                }else if(intval($sumaDeRespuestas) <= 114){
+                    $cantidadSatisfaccionBaja+=intval($sumaDeRespuestas);
                 }
+                $sumaDeRespuestas=0;
+
             }
         }
-
+        
         return [$cantidadSatisfaccionAlta,$cantidadSatisfaccionMedia,$cantidadSatisfaccionBaja];
 
     }
@@ -227,7 +231,9 @@ class ReportesController extends Controller
     
         $muestreo = Muestreo::where('encuesta_id',$idEncuesta)->first();
 
-        $usuarioList = User::with('personal')->get();
+        $usuarioList = User::with(['personal'=> function ($q) {
+            $q->where('personal.tipo_id', 2);
+        }])->get();
 
         foreach ($usuarioList as $key => $usuario) {
             if($usuario->personal !=null && $usuario->personal->id >0){
@@ -236,14 +242,16 @@ class ReportesController extends Controller
                     $sumaDeRespuestas+= intval($pr->respuesta->valor);
                 }
 
-                if($sumaDeRespuestas>=141){
-                    $cantidadSatisfaccionAlta+=$sumaDeRespuestas;
-                }else if($sumaDeRespuestas >= 115 && $sumaDeRespuestas <= 140){
-                    $cantidadSatisfaccionMedia+=$sumaDeRespuestas;
+                if(intval($sumaDeRespuestas)>=141){
+                    $cantidadSatisfaccionAlta+=intval($sumaDeRespuestas);
+                }else if(intval($sumaDeRespuestas) >= 115 && intval($sumaDeRespuestas) <= 140){
+                    $cantidadSatisfaccionMedia+=intval($sumaDeRespuestas);
         
-                }else if($sumaDeRespuestas <= 114){
-                    $cantidadSatisfaccionBaja+=$sumaDeRespuestas;
+                }else if(intval($sumaDeRespuestas) <= 114){
+                    $cantidadSatisfaccionBaja+=intval($sumaDeRespuestas);
                 }
+
+                $sumaDeRespuestas=0;
             }
         }
 
