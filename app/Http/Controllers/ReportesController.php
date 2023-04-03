@@ -186,7 +186,7 @@ class ReportesController extends Controller
         } ])->get();
 
         foreach ($usuarioList as $key => $usuario) {
-            if($usuario->personal !=null && ($usuario->personal->id ==17 || $usuario->personal->id ==18)){
+            if($usuario->personal !=null && $usuario->personal->id >0){
                 $muestraPreguntaRespuestaList = MuestraPreguntaRespuesta::with("respuesta")->whereIn('respuesta_id',$idRespuestaHabilitadaList)->where([['personal_id',$usuario->personal->id],['muestreo_id',$muestreo->id]])->get();
                 foreach ($muestraPreguntaRespuestaList as $key => $pr) {
                     $sumaDeRespuestas+= intval($pr->respuesta->valor);
