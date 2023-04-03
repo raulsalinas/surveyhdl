@@ -21,6 +21,45 @@
             <div class="col-md-4">
                 <div class="card shadow-sm bg-body rounded">
                     <div class="card-body">
+                        <h6 class="card-title text-center link-secondary"><strong>liderazgo total encuestados <span id="total_encuestados_liderazgo">0</span> trabajadores </strong></h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <canvas id="grafica_total_encuestados_liderazgo"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm bg-body rounded">
+                    <div class="card-body">
+                        <h6 class="card-title text-center link-secondary"><strong>liderazgo transformacional</strong></h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <canvas id="grafica_liderazgo_transformacional"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm bg-body rounded">
+                    <div class="card-body">
+                        <h6 class="card-title text-center link-secondary"><strong>liderazgo transaccional</strong></h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <canvas id="grafica_liderazgo_transaccional"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm bg-body rounded">
+                    <div class="card-body">
                         <h6 class="card-title text-center link-secondary"><strong>Recompensa contigente</strong></h6>
                         <div class="row">
                             <div class="col-md-12">
@@ -110,10 +149,10 @@
             <div class="col-md-4">
                 <div class="card shadow-sm bg-body rounded">
                     <div class="card-body">
-                        <h6 class="card-title text-center link-secondary"><strong>Total encuestados <span id="total_encuestados"></span></strong></h6>
+                        <h6 class="card-title text-center link-secondary"><strong>Total encuestados <span id="total_encuestados_satisfaccion">0</span></strong></h6>
                         <div class="row">
                             <div class="col-md-12">
-                                <canvas id="grafica_total_encuestados"></canvas>
+                                <canvas id="grafica_total_encuestados_satisfaccion"></canvas>
                             </div>
                         </div>
                     </div>

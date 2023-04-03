@@ -91,11 +91,18 @@ class ReportesController extends Controller
             $dataTotalEncuestados= $this->obtenerDataTotalEncuestados($idEncuesta);
 
             return response()->json([
-                'etiquetaTotalEncuestados'=>['Satisfacción Alta', 'Satisfacción Media', 'Satisfacción Baja'],'dataTotalEncuestados'=>$dataTotalEncuestados['data'],'total_encuestados'=>$dataTotalEncuestados['total_encuestados'],
+                'etiquetaTotalEncuestados'=>['Satisfacción Alta', 'Satisfacción Media', 'Satisfacción Baja'],
+                'dataTotalEncuestados'=>$dataTotalEncuestados['data'],
+                'total_encuestados'=>$dataTotalEncuestados['total_encuestados'],
 
             ]);
         }else if($idEncuesta ==2){ // liderazgo
-            $etiquetaList=['Satisfacción Alta', 'Satisfacción Media', 'Satisfacción Baja'];
+            $etiquetaDefaultList=['Satisfacción Alta', 'Satisfacción Media', 'Satisfacción Baja'];
+            $dataTotalEncuestados= $this->obtenerDataTotalEncuestados($idEncuesta);
+            
+
+            
+
 
             $dataRecompensaContigente= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[8,10,11,12,16]);
             $dataDireccionPorExcepcion= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[2,5,7,9,18,26]);
@@ -104,14 +111,46 @@ class ReportesController extends Controller
             $dataInspiracion= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[19,22,24]);
             $dataConsideracionIndividualizada= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[13,14,17]);
             $dataAusenciaLiderazgo= $this->obtenerDataDeIndicadorLiderazgo($idEncuesta,[1,6,20,27,31,32]);
+            
+            $etiquetaLiderazgoTransaccional=['Recompensa contigente', 'Recompensa por excepción'];
+            $dataLiderazgoTransaccional= $this->obtenerDataDeDimensionLiderazgoTransaccional($dataRecompensaContigente,$dataDireccionPorExcepcion);
 
-            return response()->json(['etiqueta'=>$etiquetaList,
+            $etiquetaLiderazgoTransformacional=['Carisma','Estímulo intelectual', 'Inspiración', 'consideración individualizada'];
+            $dataLiderazgoTransformacional= $this->obtenerDataDeDimensionLiderazgoTransformacional($dataCarisma,$dataEstimulacionIntelectual,$dataInspiracion,$dataConsideracionIndividualizada);
+
+            
+            return response()->json([
+            'total_encuestados'=>$dataTotalEncuestados['total_encuestados'],
+
+            'etiquetaTotalEncuestados'=>$etiquetaDefaultList,
+            'dataTotalEncuestados'=>$dataTotalEncuestados['data'],
+
+            'etiquetaLiderazgoTransformacional'=>$etiquetaLiderazgoTransformacional,
+            'dataLiderazgoTransformacional'=>$dataLiderazgoTransformacional,
+
+            'etiquetaLiderazgoTransaccional'=>$etiquetaLiderazgoTransaccional,
+            'dataLiderazgoTransaccional'=>$dataLiderazgoTransaccional,
+
+            
+            'etiquetaRecompensaContigente'=>$etiquetaDefaultList,
             'dataRecompensaContigente'=>$dataRecompensaContigente,
+
+            'etiquetaDireccionPorExcepcion'=>$etiquetaDefaultList,
             'dataDireccionPorExcepcion'=>$dataDireccionPorExcepcion,
+
+            'etiquetaCarisma'=>$etiquetaDefaultList,
             'dataCarisma'=>$dataCarisma,
+
+            'etiquetaEstimulacionIntelectual'=>$etiquetaDefaultList,
             'dataEstimulacionIntelectual'=>$dataEstimulacionIntelectual,
+
+            'etiquetaInspiracion'=>$etiquetaDefaultList,
             'dataInspiracion'=>$dataInspiracion,
+
+            'etiquetaConsideracionIndividualizada'=>$etiquetaDefaultList,
             'dataConsideracionIndividualizada'=>$dataConsideracionIndividualizada,
+
+            'etiquetaAusenciaLiderazgo'=>$etiquetaDefaultList,
             'dataAusenciaLiderazgo'=>$dataAusenciaLiderazgo
             ]);
         }
@@ -210,5 +249,23 @@ class ReportesController extends Controller
 
         return ['total_encuestados'=>$usuarioList->count(),'data'=>[$cantidadSatisfaccionAlta,$cantidadSatisfaccionMedia,$cantidadSatisfaccionBaja]];
 
+    }
+
+    
+    public function obtenerDataDeDimensionLiderazgoTransaccional($dataRecompensaContigente,$dataDireccionPorExcepcion){
+        $totalTransaccionalRecompensaContigente= intval($dataRecompensaContigente[1]) + intval($dataRecompensaContigente[2]);
+        $totalTransaccionalDireccionPorExcepcion= intval($dataDireccionPorExcepcion[1]) + intval($dataDireccionPorExcepcion[2]);
+        return [$totalTransaccionalRecompensaContigente,$totalTransaccionalDireccionPorExcepcion];
+
+    }
+
+    public function obtenerDataDeDimensionLiderazgoTransformacional($dataCarisma,$dataEstimulacionIntelectual,$dataInspiracion,$dataConsideracionIndividualizada){
+
+        $totalTransformacionalCarisma= intval($dataCarisma[1]) + intval($dataCarisma[2]);
+        $totalTransformacionaEstimulacionIntelectual= intval($dataEstimulacionIntelectual[1]) + intval($dataEstimulacionIntelectual[2]);
+        $totalTransformacionaInspiracion= intval($dataInspiracion[1]) + intval($dataInspiracion[2]);
+        $totalTransformacionalConsideracionIndividualizada= intval($dataConsideracionIndividualizada[1]) + intval($dataConsideracionIndividualizada[2]);
+
+        return [$totalTransformacionalCarisma,$totalTransformacionaEstimulacionIntelectual,$totalTransformacionaInspiracion,$totalTransformacionalConsideracionIndividualizada];
     }
 }

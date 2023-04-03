@@ -103,17 +103,25 @@ class ResultadosPorEncuestaView {
             this.model.obtenerReporteGrafico(idEncuesta).then((data) => {
                 console.log(data);
                 if(idEncuesta == 1){ // satisfaccion
-                    this.contruirGrafica(data.etiquetaTotalEncuestados, data.dataTotalEncuestados, 'grafica_total_encuestados');
-                    document.querySelector("span[id='total_encuestados']").textContent= data.total_encuestados;
+                    this.contruirGrafica(data.etiquetaTotalEncuestados, data.dataTotalEncuestados, 'grafica_total_encuestados_satisfaccion');
+                    document.querySelector("div[id='graficas_encuesta_satisfaccion'] span[id='total_encuestados_satisfaccion']").textContent= data.total_encuestados;
 
                 }else if(idEncuesta == 2){ //liderazgo
-                    this.contruirGrafica(data.etiqueta, data.dataRecompensaContigente, 'grafica_recompensa_contingente');
-                    this.contruirGrafica(data.etiqueta, data.dataDireccionPorExcepcion, 'grafica_direccion_por_excepcion');
-                    this.contruirGrafica(data.etiqueta, data.dataCarisma, 'grafica_carisma');
-                    this.contruirGrafica(data.etiqueta, data.dataEstimulacionIntelectual, 'grafica_estimulacion_intelectual');
-                    this.contruirGrafica(data.etiqueta, data.dataInspiracion, 'grafica_inspiracion');
-                    this.contruirGrafica(data.etiqueta, data.dataConsideracionIndividualizada, 'grafica_consideracion_individualizada');
-                    this.contruirGrafica(data.etiqueta, data.dataAusenciaLiderazgo, 'grafica_ausencia_de_liderazgo');
+
+                    this.contruirGrafica(data.etiquetaRecompensaContigente, data.dataRecompensaContigente, 'grafica_recompensa_contingente');
+                    this.contruirGrafica(data.etiquetaDireccionPorExcepcion, data.dataDireccionPorExcepcion, 'grafica_direccion_por_excepcion');
+                    this.contruirGrafica(data.etiquetaCarisma, data.dataCarisma, 'grafica_carisma');
+                    this.contruirGrafica(data.etiquetaEstimulacionIntelectual, data.dataEstimulacionIntelectual, 'grafica_estimulacion_intelectual');
+                    this.contruirGrafica(data.etiquetaInspiracion, data.dataInspiracion, 'grafica_inspiracion');
+                    this.contruirGrafica(data.etiquetaConsideracionIndividualizada, data.dataConsideracionIndividualizada, 'grafica_consideracion_individualizada');
+                    this.contruirGrafica(data.etiquetaAusenciaLiderazgo, data.dataAusenciaLiderazgo, 'grafica_ausencia_de_liderazgo');
+
+                    document.querySelector("div[id='graficas_encuesta_liderazgo'] span[id='total_encuestados_liderazgo']").textContent= data.total_encuestados;
+                    this.contruirGrafica(data.etiquetaTotalEncuestados, data.dataTotalEncuestados, 'grafica_total_encuestados_liderazgo');
+
+                    this.contruirGrafica(data.etiquetaLiderazgoTransaccional, data.dataLiderazgoTransaccional, 'grafica_liderazgo_transaccional');
+                    
+                    this.contruirGrafica(data.etiquetaLiderazgoTransformacional, data.dataLiderazgoTransformacional, 'grafica_liderazgo_transformacional');
                 }
             });
         }else{
