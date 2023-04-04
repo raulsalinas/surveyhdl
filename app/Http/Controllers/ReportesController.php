@@ -7,6 +7,7 @@ use App\Models\Encuesta;
 use App\Models\Muestra;
 use App\Models\MuestraPreguntaRespuesta;
 use App\Models\Muestreo;
+use App\Models\Personal;
 use App\Models\Pregunta;
 use App\Models\Respuesta;
 use App\Models\User;
@@ -180,10 +181,14 @@ class ReportesController extends Controller
         }
     
         $muestreo = Muestreo::where('encuesta_id',$idEncuesta)->first();
+        
+        $usuarioIdList=[];
+        $personalRegular = Personal::where('tipo_id',2)->get();
+        foreach ($personalRegular as $key => $personal) {
+            $usuarioIdList[]= $personal->usuario_id;
+        }
+        $usuarioList = User::with('personal')->whereIn('id',$usuarioIdList)->get();
 
-        $usuarioList = User::with(['personal'=> function ($q) {
-            $q->where('personal.tipo_id', 2);
-        } ])->get();
 
         foreach ($usuarioList as $key => $usuario) {
             if($usuario->personal !=null && $usuario->personal->id >0){
@@ -230,11 +235,13 @@ class ReportesController extends Controller
         }
     
         $muestreo = Muestreo::where('encuesta_id',$idEncuesta)->first();
-
-        $usuarioList = User::with(['personal'=> function ($q) {
-            $q->where('personal.tipo_id', 2);
-        }])->get();
-
+        $usuarioIdList=[];
+        $personalRegular = Personal::where('tipo_id',2)->get();
+        foreach ($personalRegular as $key => $personal) {
+            $usuarioIdList[]= $personal->usuario_id;
+        }
+        $usuarioList = User::with('personal')->whereIn('id',$usuarioIdList)->get();
+  
         foreach ($usuarioList as $key => $usuario) {
             if($usuario->personal !=null && $usuario->personal->id >0){
                 $muestraPreguntaRespuestaList = MuestraPreguntaRespuesta::with("respuesta")->where([['personal_id',$usuario->personal->id],['muestreo_id',$muestreo->id]])->get();
